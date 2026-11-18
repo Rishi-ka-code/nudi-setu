@@ -1,0 +1,1418 @@
+# -*- coding: utf-8 -*-
+"""
+Curated Parallel Corpus Generator for Kannada Dialects:
+- North Karnataka (Hubballi-Dharwad, Belagavi)
+- Coastal / Kundagannada (Mangaluru, Udupi, Kundapura)
+- Uttara Kannada / Havyaka (Sirsi, Karwar, Gokarna)
+- Mysuru-Mandya / South Karnataka
+
+Each pair has:
+- Spoken dialect sentence
+- Standard grammatical Kannada rewrite
+- English meaning
+- Grammatical transformation notes
+- Vocabulary alignment mapping
+"""
+
+import json
+import csv
+import os
+
+CORPUS = [
+    # -------------------------------------------------------------
+    # 1. NORTH KARNATAKA / HUBBALLI-DHARWAD (ಉತ್ತರ ಕರ್ನಾಟಕ)
+    # -------------------------------------------------------------
+    {
+        "id": "NK_001",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಅವನು ಬರ್ತಾನಾ?",
+        "standard": "ಅವನು ಬರುತ್ತಾನೆಯೇ?",
+        "english": "Is he coming?",
+        "context": "Everyday question / Inquiry",
+        "vocabulary_changes": [
+            {"dialect": "ಬರ್ತಾನಾ", "standard": "ಬರುತ್ತಾನೆಯೇ", "type": "Interrogative verb inflection"}
+        ],
+        "grammar_rule": "Contracted interrogative ending (-ತಾನಾ) converted to standard interrogative suffix (-ಉತ್ತಾನೆಯೇ)."
+    },
+    {
+        "id": "NK_002",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಅವನು ಇವ್ವತ್ ಬರಾಕತ್ತಾನ.",
+        "standard": "ಅವನು ಇಂದು ಬರುತ್ತಿದ್ದಾನೆ.",
+        "english": "He is coming today.",
+        "context": "Information sharing",
+        "vocabulary_changes": [
+            {"dialect": "ಇವ್ವತ್", "standard": "ಇಂದು", "type": "Time adverb"},
+            {"dialect": "ಬರಾಕತ್ತಾನ", "standard": "ಬರುತ್ತಿದ್ದಾನೆ", "type": "Continuous aspect verb"}
+        ],
+        "grammar_rule": "Dialect progressive aspect suffix (-ಆಕತ್ತಾನ) normalized to standard continuous form (-ಉತ್ತಿದ್ದಾನೆ)."
+    },
+    {
+        "id": "NK_003",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಏನ್ರಿ ಅಪ್ಪಾ, ಕುಂತ್ರೇನ್ ನಿಂತ್ರೇನ್ ಬರೀ ಕೆಲ್ಸಾನ.",
+        "standard": "ಏನಪ್ಪಾ, ಕುಳಿತರೂ ನಿಂತರೂ ಬರೀ ಕೆಲಸವೇ.",
+        "english": "What can I say, sitting or standing, there is only work.",
+        "context": "Everyday lament / Expression",
+        "vocabulary_changes": [
+            {"dialect": "ಏನ್ರಿ", "standard": "ಏನು", "type": "Pronoun + honorific"},
+            {"dialect": "ಕುಂತ್ರೇನ್", "standard": "ಕುಳಿತರೂ", "type": "Concessive verb"},
+            {"dialect": "ನಿಂತ್ರೇನ್", "standard": "ನಿಂತರೂ", "type": "Concessive verb"},
+            {"dialect": "ಕೆಲ್ಸಾನ", "standard": "ಕೆಲಸವೇ", "type": "Noun + emphatic particle"}
+        ],
+        "grammar_rule": "Dialect concessive suffix (-ರೇನ್) replaced with standard conditional/concessive (-ರೂ)."
+    },
+    {
+        "id": "NK_004",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ನೀವು ಯಾಕ ಹಿಂಗ ಮಾತಾಡತೀರಿ?",
+        "standard": "ನೀವು ಏಕೆ ಹೀಗೆ ಮಾತನಾಡುತ್ತೀರಿ?",
+        "english": "Why are you speaking like this?",
+        "context": "Questioning tone",
+        "vocabulary_changes": [
+            {"dialect": "ಯಾಕ", "standard": "ಏಕೆ", "type": "Interrogative pronoun"},
+            {"dialect": "ಹಿಂಗ", "standard": "ಹೀಗೆ", "type": "Manner adverb"},
+            {"dialect": "ಮಾತಾಡತೀರಿ", "standard": "ಮಾತನಾಡುತ್ತೀರಿ", "type": "Verb inflection"}
+        ],
+        "grammar_rule": "Adverbial vowel reduction (ಹಿಂಗ -> ಹೀಗೆ) and pronoun normalization (ಯಾಕ -> ಏಕೆ)."
+    },
+    {
+        "id": "NK_005",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಅವ್ವ ಬಂದು ಅಡಿಗೆ ಮಾಡಾಕತ್ತಾಳ.",
+        "standard": "ತಾಯಿ ಬಂದು ಅಡುಗೆ ಮಾಡುತ್ತಿದ್ದಾಳೆ.",
+        "english": "Mother has come and is cooking.",
+        "context": "Household conversation",
+        "vocabulary_changes": [
+            {"dialect": "ಅವ್ವ", "standard": "ತಾಯಿ", "type": "Kinship noun"},
+            {"dialect": "ಅಡಿಗೆ", "standard": "ಅಡುಗೆ", "type": "Noun vowel harmony"},
+            {"dialect": "ಮಾಡಾಕತ್ತಾಳ", "standard": "ಮಾಡುತ್ತಿದ್ದಾಳೆ", "type": "Continuous verb"}
+        ],
+        "grammar_rule": "Feminine third-person continuous marker (-ಆಕತ್ತಾಳ -> -ಉತ್ತಿದ್ದಾಳೆ)."
+    },
+    {
+        "id": "NK_006",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಊಟ ಆತೇನ್ರಿ ಎಲ್ಲಾರದೂ?",
+        "standard": "ಎಲ್ಲರ ಊಟವಾಯಿತೇ?",
+        "english": "Is everyone's meal done?",
+        "context": "Social greeting",
+        "vocabulary_changes": [
+            {"dialect": "ಆತೇನ್ರಿ", "standard": "ಆಯಿತೇ", "type": "Interrogative verb"},
+            {"dialect": "ಎಲ್ಲಾರದೂ", "standard": "ಎಲ್ಲರ", "type": "Genitive pronoun"}
+        ],
+        "grammar_rule": "Regional clitic (-ಏನ್ರಿ) normalized to standard interrogative (-ಏ)."
+    },
+    {
+        "id": "NK_007",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಅವ್ರು ನಾಳಿಕಿ ಧಾರವಾಡಕ್ಕ ಹೋಗ್ತಾರ.",
+        "standard": "ಅವರು ನಾಳೆ ಧಾರವಾಡಕ್ಕೆ ಹೋಗುತ್ತಾರೆ.",
+        "english": "They are going to Dharwad tomorrow.",
+        "context": "Travel plan",
+        "vocabulary_changes": [
+            {"dialect": "ಅವ್ರು", "standard": "ಅವರು", "type": "Pronoun contraction"},
+            {"dialect": "ನಾಳಿಕಿ", "standard": "ನಾಳೆ", "type": "Time adverb"},
+            {"dialect": "ಧಾರವಾಡಕ್ಕ", "standard": "ಧಾರವಾಡಕ್ಕೆ", "type": "Dative case"},
+            {"dialect": "ಹೋಗ್ತಾರ", "standard": "ಹೋಗುತ್ತಾರೆ", "type": "Habitual future verb"}
+        ],
+        "grammar_rule": "Dative marker (-ಕ್ಕ -> -ಕ್ಕೆ) and third-person plural contraction (-ತಾರ -> -ತ್ತಾರೆ)."
+    },
+    {
+        "id": "NK_008",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಖರೇ ಹೇಳ್ಬೇಕಂದ್ರ ನಂಗೂ ಗೊತ್ತಿಲ್ರಿ.",
+        "standard": "ನಿಜ ಹೇಳಬೇಕೆಂದರೆ ನನಗೂ ಗೊತ್ತಿಲ್ಲ.",
+        "english": "To tell the truth, even I don't know.",
+        "context": "Honest admission",
+        "vocabulary_changes": [
+            {"dialect": "ಖರೇ", "standard": "ನಿಜ", "type": "Adjective"},
+            {"dialect": "ಹೇಳ್ಬೇಕಂದ್ರ", "standard": "ಹೇಳಬೇಕೆಂದರೆ", "type": "Conditional verb compound"},
+            {"dialect": "ನಂಗೂ", "standard": "ನನಗೂ", "type": "Dative pronoun"},
+            {"dialect": "ಗೊತ್ತಿಲ್ರಿ", "standard": "ಗೊತ್ತಿಲ್ಲ", "type": "Negation + politeness marker"}
+        ],
+        "grammar_rule": "Borrowed lexical item (ಖರೆ) mapped to native formal (ನಿಜ); honorific particle (-ರಿ) detached."
+    },
+    {
+        "id": "NK_009",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಬೊವ್ವ ಚೊಲೋ ಹುಡುಗ ನೋಡ್ರಿ ಅವ.",
+        "standard": "ಅವನು ತುಂಬಾ ಒಳ್ಳೆಯ ಹುಡುಗ.",
+        "english": "Look, he is a very good boy.",
+        "context": "Appreciation",
+        "vocabulary_changes": [
+            {"dialect": "ಬೊವ್ವ", "standard": "ತುಂಬಾ", "type": "Degree adverb"},
+            {"dialect": "ಚೊಲೋ", "standard": "ಒಳ್ಳೆಯ", "type": "Qualitative adjective"},
+            {"dialect": "ನೋಡ್ರಿ", "standard": "ನೋಡಿ", "type": "Imperative"},
+            {"dialect": "ಅವ", "standard": "ಅವನು", "type": "Pronoun truncation"}
+        ],
+        "grammar_rule": "Dialect qualitative adjectives (ಚೊಲೋ) and intensifiers (ಬೊವ್ವ) transformed to standard Kannada."
+    },
+    {
+        "id": "NK_010",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಎಲ್ಲಿ ಹೊಂಟಿ ತಮ್ಮಾ?",
+        "standard": "ಎಲ್ಲಿಗೆ ಹೊರಟಿದ್ದೀಯಾ ತಮ್ಮ?",
+        "english": "Where are you heading, younger brother?",
+        "context": "Street greeting",
+        "vocabulary_changes": [
+            {"dialect": "ಎಲ್ಲಿ", "standard": "ಎಲ್ಲಿಗೆ", "type": "Locative to directional dative"},
+            {"dialect": "ಹೊಂಟಿ", "standard": "ಹೊರಟಿದ್ದೀಯಾ", "type": "Second person present verb"}
+        ],
+        "grammar_rule": "Verbal truncation (ಹೊಂಟಿ -> ಹೊರಟಿದ್ದೀಯಾ) with locative dative restoration."
+    },
+    {
+        "id": "NK_011",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ನಾವ್ರ ಬರ್ತೀವಿ ಅಂದಿದ್ವಿ.",
+        "standard": "ನಾವು ಬರುತ್ತೇವೆ ಎಂದು ಹೇಳಿದ್ದೆವು.",
+        "english": "We had said that we would come.",
+        "context": "Past commitment",
+        "vocabulary_changes": [
+            {"dialect": "ನಾವ್ರ", "standard": "ನಾವು", "type": "Pronoun plural suffix"},
+            {"dialect": "ಬರ್ತೀವಿ", "standard": "ಬರುತ್ತೇವೆ", "type": "First person plural future"},
+            {"dialect": "ಅಂದಿದ್ವಿ", "standard": "ಎಂದು ಹೇಳಿದ್ದೆವು", "type": "Reported speech verb"}
+        ],
+        "grammar_rule": "Plural pronoun normalization (ನಾವ್ರ -> ನಾವು) and unravelling contracted reported speech (ಅಂದಿದ್ವಿ)."
+    },
+    {
+        "id": "NK_012",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಹಂಗಾರ ನಾನ್ ಹೊಂಟೆ.",
+        "standard": "ಹಾಗಾದರೆ ನಾನು ಹೊರಟಿದ್ದೇನೆ.",
+        "english": "In that case, I am leaving.",
+        "context": "Departure",
+        "vocabulary_changes": [
+            {"dialect": "ಹಂಗಾರ", "standard": "ಹಾಗಾದರೆ", "type": "Conditional connector"},
+            {"dialect": "ನಾನ್", "standard": "ನಾನು", "type": "Pronoun truncation"},
+            {"dialect": "ಹೊಂಟೆ", "standard": "ಹೊರಟಿದ್ದೇನೆ", "type": "First person verb"}
+        ],
+        "grammar_rule": "Connector standardisation (ಹಂಗಾರ -> ಹಾಗಾದರೆ)."
+    },
+    {
+        "id": "NK_013",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಯಾಕೋ ನನಗ ಬ್ಯಾಸರಾಗಲಿಕ್ಕತ್ತೈತಿ.",
+        "standard": "ಏಕೋ ನನಗೆ ಬೇಸರವಾಗುತ್ತಿದೆ.",
+        "english": "Somehow I am feeling weary/sad.",
+        "context": "Emotional state",
+        "vocabulary_changes": [
+            {"dialect": "ಯಾಕೋ", "standard": "ಏಕೋ", "type": "Indefinite adverb"},
+            {"dialect": "ನನಗ", "standard": "ನನಗೆ", "type": "Dative pronoun vowel"},
+            {"dialect": "ಬ್ಯಾಸರಾಗಲಿಕ್ಕತ್ತೈತಿ", "standard": "ಬೇಸರವಾಗುತ್ತಿದೆ", "type": "Neuter continuous verb"}
+        ],
+        "grammar_rule": "Dialect neuter continuous ending (-ಅಲಿಕ್ಕತ್ತೈತಿ) mapped to standard (-ಆಗುತ್ತಿದೆ)."
+    },
+    {
+        "id": "NK_014",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಇಷ್ಟೇ ಮಾತ ಸಾಕು ನಡೀರಿ.",
+        "standard": "ಇಷ್ಟೇ ಮಾತು ಸಾಕು ನಡೆಯಿರಿ.",
+        "english": "Enough talk, let us walk.",
+        "context": "Concluding discussion",
+        "vocabulary_changes": [
+            {"dialect": "ಮಾತ", "standard": "ಮಾತು", "type": "Noun terminal vowel"},
+            {"dialect": "ನಡೀರಿ", "standard": "ನಡೆಯಿರಿ", "type": "Plural imperative verb"}
+        ],
+        "grammar_rule": "Terminal short vowel restoration (ಮಾತ -> ಮಾತು)."
+    },
+    {
+        "id": "NK_015",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ನಮ್ ಊರಾಗ ಮಳಿ ಚೊಲೊ ಐತ್ರಿ.",
+        "standard": "ನಮ್ಮ ಊರಿನಲ್ಲಿ ಮಳೆ ಚೆನ್ನಾಗಿದೆ.",
+        "english": "The rain in our village is good.",
+        "context": "Weather report",
+        "vocabulary_changes": [
+            {"dialect": "ನಮ್", "standard": "ನಮ್ಮ", "type": "Possessive adjective"},
+            {"dialect": "ಊರಾಗ", "standard": "ಊರಿನಲ್ಲಿ", "type": "Locative case marker"},
+            {"dialect": "ಮಳಿ", "standard": "ಮಳೆ", "type": "Vowel ending"},
+            {"dialect": "ಚೊಲೊ ಐತ್ರಿ", "standard": "ಚೆನ್ನಾಗಿದೆ", "type": "Copula + honorific"}
+        ],
+        "grammar_rule": "Locative case suffix (-ಆಗ -> -ನಲ್ಲಿ) and existential copula (ಐತಿ -> ಆಗಿದೆ)."
+    },
+    {
+        "id": "NK_016",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಇಲ್ಯಾರೂ ಇಲ್ಲೇನ್ರಿ?",
+        "standard": "ಇಲ್ಲಿ ಯಾರೂ ಇಲ್ಲವೇ?",
+        "english": "Is nobody here?",
+        "context": "Calling out at a shop or house",
+        "vocabulary_changes": [
+            {"dialect": "ಇಲ್ಯಾರೂ", "standard": "ಇಲ್ಲಿ ಯಾರೂ", "type": "Sandhi splitting"},
+            {"dialect": "ಇಲ್ಲೇನ್ರಿ", "standard": "ಇಲ್ಲವೇ", "type": "Negative interrogative"}
+        ],
+        "grammar_rule": "Negative interrogative contraction (ಇಲ್ಲೇನ್ರಿ -> ಇಲ್ಲವೇ)."
+    },
+    {
+        "id": "NK_017",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಹೋದ ವಾರ ಬಂದಿದ್ದೆಲ್ರೀ ನಾವು.",
+        "standard": "ಕಳೆದ ವಾರ ನಾವು ಬಂದಿದ್ದೆವಲ್ಲವೇ.",
+        "english": "Didn't we come last week?",
+        "context": "Reminder",
+        "vocabulary_changes": [
+            {"dialect": "ಹೋದ ವಾರ", "standard": "ಕಳೆದ ವಾರ", "type": "Time expression"},
+            {"dialect": "ಬಂದಿದ್ದೆಲ್ರೀ", "standard": "ಬಂದಿದ್ದೆವಲ್ಲವೇ", "type": "Tag question contraction"},
+            {"dialect": "ನಾವು", "standard": "ನಾವು", "type": "Pronoun"}
+        ],
+        "grammar_rule": "Tag question (-ಎಲ್ರೀ) expanded to grammatical standard (-ಅಲ್ಲವೇ)."
+    },
+    {
+        "id": "NK_018",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಆ ಕೆಲಸಾ ಮುಗೀಲಿಕ್ಕ ಇನ್ನೊಂದಿಷ್ಟು ಹೊತ್ತ ಬೇಕ್ರಿ.",
+        "standard": "ಆ ಕೆಲಸ ಮುಗಿಯಲು ಇನ್ನಷ್ಟು ಸಮಯ ಬೇಕು.",
+        "english": "It will take some more time for that work to finish.",
+        "context": "Work update",
+        "vocabulary_changes": [
+            {"dialect": "ಕೆಲಸಾ", "standard": "ಕೆಲಸ", "type": "Elongated vowel"},
+            {"dialect": "ಮುಗೀಲಿಕ್ಕ", "standard": "ಮುಗಿಯಲು", "type": "Infinitive suffix"},
+            {"dialect": "ಇನ್ನೊಂದಿಷ್ಟು", "standard": "ಇನ್ನಷ್ಟು", "type": "Quantity adverb"},
+            {"dialect": "ಹೊತ್ತ", "standard": "ಸಮಯ", "type": "Noun substitution"},
+            {"dialect": "ಬೇಕ್ರಿ", "standard": "ಬೇಕು", "type": "Modal verb"}
+        ],
+        "grammar_rule": "Infinitive marker (-ಲಿಕ್ಕ -> -ಲು) and polite particle (-ರಿ) removal."
+    },
+    {
+        "id": "NK_019",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಅವ ಏನ್ ಮಾಡಾಕತ್ತಾನ ನೋಡಿಕೊಂಡು ಬಾ.",
+        "standard": "ಅವನು ಏನು ಮಾಡುತ್ತಿದ್ದಾನೆ ಎಂದು ನೋಡಿಕೊಂಡು ಬಾ.",
+        "english": "Go see what he is doing.",
+        "context": "Instruction",
+        "vocabulary_changes": [
+            {"dialect": "ಅವ", "standard": "ಅವನು", "type": "Pronoun"},
+            {"dialect": "ಮಾಡಾಕತ್ತಾನ", "standard": "ಮಾಡುತ್ತಿದ್ದಾನೆ", "type": "Continuous verb"}
+        ],
+        "grammar_rule": "Direct complementizer insertion (ಎಂದು) and standard pronoun form."
+    },
+    {
+        "id": "NK_020",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ನನಗೇನ್ ಗೊತ್ತಿತ್ರಿ ಈ ಮಾತ?",
+        "standard": "ನನಗೆ ಈ ವಿಷಯ ಹೇಗೆ ತಿಳಿದಿರಲು ಸಾಧ್ಯ?",
+        "english": "How was I supposed to know this matter?",
+        "context": "Rhetorical question",
+        "vocabulary_changes": [
+            {"dialect": "ನನಗೇನ್", "standard": "ನನಗೆ", "type": "Pronoun"},
+            {"dialect": "ಗೊತ್ತಿತ್ರಿ", "standard": "ತಿಳಿದಿತ್ತು", "type": "Past modal"},
+            {"dialect": "ಮಾತ", "standard": "ವಿಷಯ", "type": "Noun replacement"}
+        ],
+        "grammar_rule": "Expressive dialect question transformed to standard reflective sentence."
+    },
+
+    # -------------------------------------------------------------
+    # 2. MANGALURU / COASTAL / KUNDAGANNADA (ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ)
+    # -------------------------------------------------------------
+    {
+        "id": "CO_001",
+        "region_code": "CO",
+        "region_name_en": "Coastal / Kundagannada (Mangaluru)",
+        "region_name_kn": "ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (ಮಂಗಳೂರು)",
+        "spoken": "ಎಂತ ಮಾರೆ, ಇವತ್ತು ಶಾಲೆಗ್ ರಜಾನಾ?",
+        "standard": "ಏನು ಗೆಳೆಯ, ಇಂದು ಶಾಲೆಗೆ ರಜೆಯೇ?",
+        "english": "What friend, is school on holiday today?",
+        "context": "Friendly question",
+        "vocabulary_changes": [
+            {"dialect": "ಎಂತ", "standard": "ಏನು", "type": "Interrogative pronoun"},
+            {"dialect": "ಮಾರೆ", "standard": "ಗೆಳೆಯ", "type": "Vocative marker of address"},
+            {"dialect": "ಶಾಲೆಗ್", "standard": "ಶಾಲೆಗೆ", "type": "Dative truncation"},
+            {"dialect": "ರಜಾನಾ", "standard": "ರಜೆಯೇ", "type": "Interrogative suffix"}
+        ],
+        "grammar_rule": "Coastal address particle (ಮಾರೆ) normalized to standard vocative; vowel restoration on dative (-ಗ್ -> -ಗೆ)."
+    },
+    {
+        "id": "CO_002",
+        "region_code": "CO",
+        "region_name_en": "Coastal / Kundagannada (Mangaluru)",
+        "region_name_kn": "ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (ಮಂಗಳೂರು)",
+        "spoken": "ನಾಳೆ ಬೆಳಿಗ್ಗೆ ಪೋಯಿ ಬರ್ಪೆ.",
+        "standard": "ನಾಳೆ ಬೆಳಿಗ್ಗೆ ಹೋಗಿ ಬರುತ್ತೇನೆ.",
+        "english": "I will go and return tomorrow morning.",
+        "context": "Taking leave / Departure",
+        "vocabulary_changes": [
+            {"dialect": "ಪೋಯಿ", "standard": "ಹೋಗಿ", "type": "Gerund / Participle"},
+            {"dialect": "ಬರ್ಪೆ", "standard": "ಬರುತ್ತೇನೆ", "type": "First-person future verb"}
+        ],
+        "grammar_rule": "Coastal/Kundagannada verb root (ಪೋಯಿ -> ಹೋಗಿ) and suffix (-ಪೆ -> -ತ್ತೇನೆ) standardized."
+    },
+    {
+        "id": "CO_003",
+        "region_code": "CO",
+        "region_name_en": "Coastal / Kundagannada (Mangaluru)",
+        "region_name_kn": "ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (ಮಂಗಳೂರು)",
+        "spoken": "ಅದ್ಕೆ ನಾನ್ ಹೇಳ್ದೆ ಕೇಳಿಲ್ವಾ ನೀನು?",
+        "standard": "ಅದಕ್ಕೆ ನಾನು ಹೇಳಿದೆ, ನೀನು ಕೇಳಿಸಿಕೊಳ್ಳಲಿಲ್ಲವೇ?",
+        "english": "That's why I said it, didn't you listen?",
+        "context": "Argument / Reminder",
+        "vocabulary_changes": [
+            {"dialect": "ಅದ್ಕೆ", "standard": "ಅದಕ್ಕೆ", "type": "Causal conjunction"},
+            {"dialect": "ಹೇಳ್ದೆ", "standard": "ಹೇಳಿದೆ", "type": "Past first person verb"},
+            {"dialect": "ಕೇಳಿಲ್ವಾ", "standard": "ಕೇಳಿಸಿಕೊಳ್ಳಲಿಲ್ಲವೇ", "type": "Negative question"}
+        ],
+        "grammar_rule": "Medial vowel syncopation restoration (ಹೇಳ್ದೆ -> ಹೇಳಿದೆ) and tag question expansion."
+    },
+    {
+        "id": "CO_004",
+        "region_code": "CO",
+        "region_name_en": "Coastal / Kundagannada (Mangaluru)",
+        "region_name_kn": "ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (ಮಂಗಳೂರು)",
+        "spoken": "ಮನೆಲ್ ಎಲ್ಲರೂ ಆರಾಮ್ದಲ್ಲಿ ಇದ್ದಾರಾ?",
+        "standard": "ಮನೆಯಲ್ಲಿ ಎಲ್ಲರೂ ಕ್ಷೇಮವಾಗಿದ್ದಾರೆಯೇ?",
+        "english": "Is everyone fine at home?",
+        "context": "Wellbeing check",
+        "vocabulary_changes": [
+            {"dialect": "ಮನೆಲ್", "standard": "ಮನೆಯಲ್ಲಿ", "type": "Locative contraction"},
+            {"dialect": "ಆರಾಮ್ದಲ್ಲಿ", "standard": "ಕ್ಷೇಮವಾಗಿ", "type": "Adverbial expression"},
+            {"dialect": "ಇದ್ದಾರಾ", "standard": "ಇದ್ದಾರೆಯೇ", "type": "Interrogative copula"}
+        ],
+        "grammar_rule": "Locative contraction (-ಲ್ -> -ಯಲ್ಲಿ) and formal wellbeing phrasing."
+    },
+    {
+        "id": "CO_005",
+        "region_code": "CO",
+        "region_name_en": "Coastal / Kundagannada (Mangaluru)",
+        "region_name_kn": "ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (ಮಂಗಳೂರು)",
+        "spoken": "ತಿಂಡಿ ಆತಾ? ಚಾ ಕುಡ್ದ್ರಾ?",
+        "standard": "ತಿಂಡಿ ಆಯಿತೇ? ಚಹಾ ಕುಡಿದಿರಾ?",
+        "english": "Did you have breakfast? Did you drink tea?",
+        "context": "Hospitality greeting",
+        "vocabulary_changes": [
+            {"dialect": "ಆತಾ", "standard": "ಆಯಿತೇ", "type": "Interrogative suffix"},
+            {"dialect": "ಚಾ", "standard": "ಚಹಾ", "type": "Noun vowel shortening"},
+            {"dialect": "ಕುಡ್ದ್ರಾ", "standard": "ಕುಡಿದಿರಾ", "type": "Past honorific verb"}
+        ],
+        "grammar_rule": "Phonetic vowel contraction in beverage name and syncopated verb normalization."
+    },
+    {
+        "id": "CO_006",
+        "region_code": "CO",
+        "region_name_en": "Coastal / Kundagannada (Mangaluru)",
+        "region_name_kn": "ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (ಮಂಗಳೂರು)",
+        "spoken": "ಇವತ್ತಿನ ಮೀನ್ ಸಾರ್ ಬಾರೀ ರುಚಿ ಆತ್.",
+        "standard": "ಇಂದಿನ ಮೀನಿನ ಸಾರು ತುಂಬಾ ರುಚಿಯಾಗಿತ್ತು.",
+        "english": "Today's fish curry was very delicious.",
+        "context": "Food compliment",
+        "vocabulary_changes": [
+            {"dialect": "ಇವತ್ತಿನ", "standard": "ಇಂದಿನ", "type": "Genitive time adjective"},
+            {"dialect": "ಮೀನ್ ಸಾರ್", "standard": "ಮೀನಿನ ಸಾರು", "type": "Compound noun vowel truncation"},
+            {"dialect": "ಬಾರೀ", "standard": "ತುಂಬಾ", "type": "Intensifier adverb"},
+            {"dialect": "ಆತ್", "standard": "ಆಗಿತ್ತು", "type": "Past auxiliary"}
+        ],
+        "grammar_rule": "Coastal past neuter contraction (-ಆತ್ -> -ಆಗಿತ್ತು) and terminal vowel preservation."
+    },
+    {
+        "id": "CO_007",
+        "region_code": "CO",
+        "region_name_en": "Coastal / Kundagannada (Mangaluru)",
+        "region_name_kn": "ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (ಮಂಗಳೂರು)",
+        "spoken": "ಬೇಗ ಬಾ ಮಾರೆ, ಬಸ್ಸ್ ಬಿಟ್ಬುಡ್ತಾರೆ.",
+        "standard": "ಬೇಗ ಬಾ ಗೆಳೆಯ, ಬಸ್ಸು ಹೊರಟುಬಿಡುತ್ತದೆ.",
+        "english": "Come quickly my friend, the bus will leave.",
+        "context": "Urgency",
+        "vocabulary_changes": [
+            {"dialect": "ಮಾರೆ", "standard": "ಗೆಳೆಯ", "type": "Vocative marker"},
+            {"dialect": "ಬಸ್ಸ್", "standard": "ಬಸ್ಸು", "type": "Loanword terminal vowel"},
+            {"dialect": "ಬಿಟ್ಬುಡ್ತಾರೆ", "standard": "ಹೊರಟುಬಿಡುತ್ತದೆ", "type": "Compound verb contraction"}
+        ],
+        "grammar_rule": "Subject-verb agreement (neuter subject ಬಸ್ಸು takes singular -ತ್ತದೆ, not personal -ತಾರೆ)."
+    },
+    {
+        "id": "CO_008",
+        "region_code": "CO",
+        "region_name_en": "Coastal / Kundagannada (Mangaluru)",
+        "region_name_kn": "ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (ಮಂಗಳೂರು)",
+        "spoken": "ಅವ್ರ ಮನೆಗ್ ಹೋದ್ರೆ ಯಾರ್ ಸಿಗ್ಲಿಲ್ಲ.",
+        "standard": "ಅವರ ಮನೆಗೆ ಹೋದಾಗ ಯಾರೂ ಸಿಗಲಿಲ್ಲ.",
+        "english": "When I went to their house, nobody was found.",
+        "context": "Narrative",
+        "vocabulary_changes": [
+            {"dialect": "ಅವ್ರ", "standard": "ಅವರ", "type": "Possessive pronoun"},
+            {"dialect": "ಮನೆಗ್", "standard": "ಮನೆಗೆ", "type": "Dative case"},
+            {"dialect": "ಹೋದ್ರೆ", "standard": "ಹೋದಾಗ", "type": "Conditional vs Temporal clause"},
+            {"dialect": "ಯಾರ್", "standard": "ಯಾರೂ", "type": "Indefinite pronoun"},
+            {"dialect": "ಸಿಗ್ಲಿಲ್ಲ", "standard": "ಸಿಗಲಿಲ್ಲ", "type": "Negative verb contraction"}
+        ],
+        "grammar_rule": "Temporal subordinator (ಹೋದಾಗ) replaces conditional (ಹೋದ್ರೆ) in past narrative context."
+    },
+    {
+        "id": "CO_009",
+        "region_code": "CO",
+        "region_name_en": "Coastal / Kundagannada (Mangaluru)",
+        "region_name_kn": "ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (ಮಂಗಳೂರು)",
+        "spoken": "ಎಂತಕ್ಕ್ ಹಿಂಗ್ ಬೊಬ್ಬೆ ಹೊಡಿತಿ?",
+        "standard": "ಏತಕ್ಕಾಗಿ ಹೀಗೆ ಕೂಗಾಡುತ್ತಿದ್ದೀಯ?",
+        "english": "Why are you shouting like this?",
+        "context": "Reprimand",
+        "vocabulary_changes": [
+            {"dialect": "ಎಂತಕ್ಕ್", "standard": "ಏತಕ್ಕಾಗಿ", "type": "Causal interrogative"},
+            {"dialect": "ಹಿಂಗ್", "standard": "ಹೀಗೆ", "type": "Manner adverb"},
+            {"dialect": "ಬೊಬ್ಬೆ ಹೊಡಿತಿ", "standard": "ಕೂಗಾಡುತ್ತಿದ್ದೀಯ", "type": "Idiomatic phrase"}
+        ],
+        "grammar_rule": "Dialect interrogative (ಎಂತಕ್ಕ್ -> ಏತಕ್ಕಾಗಿ) and manner adverb standardization."
+    },
+    {
+        "id": "CO_010",
+        "region_code": "CO",
+        "region_name_en": "Coastal / Kundagannada (Mangaluru)",
+        "region_name_kn": "ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (ಮಂಗಳೂರು)",
+        "spoken": "ಆ ಕೆಲಸ ಮುಗ್ದ್ ಹೋತಾ?",
+        "standard": "ಆ ಕೆಲಸ ಮುಗಿದುಹೋಯಿತೇ?",
+        "english": "Did that work get completed?",
+        "context": "Status inquiry",
+        "vocabulary_changes": [
+            {"dialect": "ಮುಗ್ದ್", "standard": "ಮುಗಿದು", "type": "Conjunctive participle"},
+            {"dialect": "ಹೋತಾ", "standard": "ಹೋಯಿತೇ", "type": "Interrogative auxiliary"}
+        ],
+        "grammar_rule": "Participle internal vowel insertion (ಮುಗ್ದ್ -> ಮುಗಿದು) and interrogative inflection."
+    },
+    {
+        "id": "CO_011",
+        "region_code": "CO",
+        "region_name_en": "Coastal / Kundagannada (Mangaluru)",
+        "region_name_kn": "ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (ಮಂಗಳೂರು)",
+        "spoken": "ಅಪ್ಪ ಕಾಫಿ ಕುಡಿತಾರೆ, ನೀವ್ ಬನ್ನಿ.",
+        "standard": "ತಂದೆ ಕಾಫಿ ಕುಡಿಯುತ್ತಿದ್ದಾರೆ, ನೀವು ಬನ್ನಿರಿ.",
+        "english": "Father is having coffee, please come.",
+        "context": "Welcoming guests",
+        "vocabulary_changes": [
+            {"dialect": "ಅಪ್ಪ", "standard": "ತಂದೆ", "type": "Kinship formalization"},
+            {"dialect": "ಕುಡಿತಾರೆ", "standard": "ಕುಡಿಯುತ್ತಿದ್ದಾರೆ", "type": "Present progressive"},
+            {"dialect": "ನೀವ್", "standard": "ನೀವು", "type": "Pronoun vowel"},
+            {"dialect": "ಬನ್ನಿ", "standard": "ಬನ್ನಿರಿ", "type": "Polite imperative"}
+        ],
+        "grammar_rule": "Continuous aspect restoration for ongoing present action."
+    },
+    {
+        "id": "CO_012",
+        "region_code": "CO",
+        "region_name_en": "Coastal / Kundagannada (Mangaluru)",
+        "region_name_kn": "ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (ಮಂಗಳೂರು)",
+        "spoken": "ಅದ್ ನಿಂಗೊತ್ತಿಲ್ವಾ ಮಾರೆ?",
+        "standard": "ಅದು ನಿನಗೆ ತಿಳಿದಿಲ್ಲವೇ ಗೆಳೆಯ?",
+        "english": "Don't you know that, friend?",
+        "context": "Surprised inquiry",
+        "vocabulary_changes": [
+            {"dialect": "ಅದ್", "standard": "ಅದು", "type": "Pronoun truncation"},
+            {"dialect": "ನಿಂಗೊತ್ತಿಲ್ವಾ", "standard": "ನಿನಗೆ ತಿಳಿದಿಲ್ಲವೇ", "type": "Fused dative negation"},
+            {"dialect": "ಮಾರೆ", "standard": "ಗೆಳೆಯ", "type": "Vocative particle"}
+        ],
+        "grammar_rule": "Fused pronoun and modal verb decomposed into standard constituents."
+    },
+
+    # -------------------------------------------------------------
+    # 3. UTTARA KANNADA / HAVYAKA (ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ)
+    # -------------------------------------------------------------
+    {
+        "id": "UK_001",
+        "region_code": "UK",
+        "region_name_en": "Uttara Kannada / Havyaka (Sirsi-Karwar)",
+        "region_name_kn": "ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ (ಶಿರಸಿ-ಕಾರವಾರ)",
+        "spoken": "ನಾಂ ಇವತ್ತು ನಿಮ್ಮನೆಗೆ ಬತ್ತೆ.",
+        "standard": "ನಾನು ಇಂದು ನಿಮ್ಮ ಮನೆಗೆ ಬರುತ್ತೇನೆ.",
+        "english": "I will come to your house today.",
+        "context": "Visitor announcement",
+        "vocabulary_changes": [
+            {"dialect": "ನಾಂ", "standard": "ನಾನು", "type": "First-person pronoun nasal ending"},
+            {"dialect": "ಇವತ್ತು", "standard": "ಇಂದು", "type": "Time word"},
+            {"dialect": "ನಿಮ್ಮನೆಗೆ", "standard": "ನಿಮ್ಮ ಮನೆಗೆ", "type": "Sandhi separation"},
+            {"dialect": "ಬತ್ತೆ", "standard": "ಬರುತ್ತೇನೆ", "type": "First person future verb"}
+        ],
+        "grammar_rule": "Havyaka pronoun nasal (-ಂ -> -ನು) and first-person verb ending (-ತ್ತೆ -> -ತ್ತೇನೆ)."
+    },
+    {
+        "id": "UK_002",
+        "region_code": "UK",
+        "region_name_en": "Uttara Kannada / Havyaka (Sirsi-Karwar)",
+        "region_name_kn": "ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ (ಶಿರಸಿ-ಕಾರವಾರ)",
+        "spoken": "ನೀಂ ಏಂ ಮಾಡ್ತಿದ್ದಿ ಅಲ್ಲಿ?",
+        "standard": "ನೀನು ಅಲ್ಲಿ ಏನು ಮಾಡುತ್ತಿದ್ದೀಯಾ?",
+        "english": "What are you doing there?",
+        "context": "Inquiry",
+        "vocabulary_changes": [
+            {"dialect": "ನೀಂ", "standard": "ನೀನು", "type": "Second person pronoun"},
+            {"dialect": "ಏಂ", "standard": "ಏನು", "type": "Interrogative nasal pronoun"},
+            {"dialect": "ಮಾಡ್ತಿದ್ದಿ", "standard": "ಮಾಡುತ್ತಿದ್ದೀಯಾ", "type": "Second person progressive verb"}
+        ],
+        "grammar_rule": "Havyaka second-person progressive ending (-ಇದ್ದಿ -> -ಇದ್ದೀಯಾ)."
+    },
+    {
+        "id": "UK_003",
+        "region_code": "UK",
+        "region_name_en": "Uttara Kannada / Havyaka (Sirsi-Karwar)",
+        "region_name_kn": "ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ (ಶಿರಸಿ-ಕಾರವಾರ)",
+        "spoken": "ಅವಂ ಎಲ್ಲಿಗೆ ಹೋದನೋ ಗೊತ್ತಾಪೋದಿಲ್ಲ.",
+        "standard": "ಅವನು ಎಲ್ಲಿಗೆ ಹೋದನೋ ತಿಳಿಯುವುದಿಲ್ಲ.",
+        "english": "It is not known where he went.",
+        "context": "Uncertainty",
+        "vocabulary_changes": [
+            {"dialect": "ಅವಂ", "standard": "ಅವನು", "type": "Third person masculine pronoun"},
+            {"dialect": "ಗೊತ್ತಾಪೋದಿಲ್ಲ", "standard": "ತಿಳಿಯುವುದಿಲ್ಲ", "type": "Negative verb formation"}
+        ],
+        "grammar_rule": "Havyaka auxiliary negation (-ಆಪೋದಿಲ್ಲ -> -ಆಗುವುದಿಲ್ಲ / ತಿಳಿಯುವುದಿಲ್ಲ)."
+    },
+    {
+        "id": "UK_004",
+        "region_code": "UK",
+        "region_name_en": "Uttara Kannada / Havyaka (Sirsi-Karwar)",
+        "region_name_kn": "ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ (ಶಿರಸಿ-ಕಾರವಾರ)",
+        "spoken": "ಕಾಸಿಲ್ದೆ ಸಂತೆಗ್ ಹೆಂಗೆ ಹೋಗೋದು?",
+        "standard": "ಹಣವಿಲ್ಲದೆ ಸಂತೆಗೆ ಹೇಗೆ ಹೋಗುವುದು?",
+        "english": "Without money, how to go to the weekly market?",
+        "context": "Market dilemma",
+        "vocabulary_changes": [
+            {"dialect": "ಕಾಸಿಲ್ದೆ", "standard": "ಹಣವಿಲ್ಲದೆ", "type": "Colloquial noun + negative participle"},
+            {"dialect": "ಸಂತೆಗ್", "standard": "ಸಂತೆಗೆ", "type": "Dative vowel restoration"},
+            {"dialect": "ಹೆಂಗೆ", "standard": "ಹೇಗೆ", "type": "Manner interrogative"},
+            {"dialect": "ಹೋಗೋದು", "standard": "ಹೋಗುವುದು", "type": "Verbal noun"}
+        ],
+        "grammar_rule": "Verbal noun suffix (-ಓದು -> -ಉವುದು) and formal vocabulary replacement."
+    },
+    {
+        "id": "UK_005",
+        "region_code": "UK",
+        "region_name_en": "Uttara Kannada / Havyaka (Sirsi-Karwar)",
+        "region_name_kn": "ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ (ಶಿರಸಿ-ಕಾರವಾರ)",
+        "spoken": "ಅಪ್ಪಚ್ಚಿ ತೋಟದಲ್ಲಿ ಕೆಲಸ ಮಾಡ್ತಿದಾರೆ.",
+        "standard": "ತಂದೆಯವರು ತೋಟದಲ್ಲಿ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದಾರೆ.",
+        "english": "Father is working in the plantation.",
+        "context": "Family update",
+        "vocabulary_changes": [
+            {"dialect": "ಅಪ್ಪಚ್ಚಿ", "standard": "ತಂದೆಯವರು", "type": "Kinship honorific"},
+            {"dialect": "ಮಾಡ್ತಿದಾರೆ", "standard": "ಮಾಡುತ್ತಿದ್ದಾರೆ", "type": "Present continuous verb"}
+        ],
+        "grammar_rule": "Regional honorific kinship title mapped to standard respectful noun."
+    },
+    {
+        "id": "UK_006",
+        "region_code": "UK",
+        "region_name_en": "Uttara Kannada / Havyaka (Sirsi-Karwar)",
+        "region_name_kn": "ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ (ಶಿರಸಿ-ಕಾರವಾರ)",
+        "spoken": "ಮಳೆ ಜೋರಾಗಿ ಬತ್ತಾ ಇದ್ದು, ಕೊಡೆ ತಕ್ಕೋ.",
+        "standard": "ಮಳೆ ಜೋರಾಗಿ ಬರುತ್ತಿದೆ, ಛತ್ರಿ ತೆಗೆದುಕೊ.",
+        "english": "It is raining heavily, take an umbrella.",
+        "context": "Weather advice",
+        "vocabulary_changes": [
+            {"dialect": "ಬತ್ತಾ ಇದ್ದು", "standard": "ಬರುತ್ತಿದೆ", "type": "Progressive verb"},
+            {"dialect": "ಕೊಡೆ", "standard": "ಛತ್ರಿ", "type": "Noun substitution"},
+            {"dialect": "ತಕ್ಕೋ", "standard": "ತೆಗೆದುಕೊ", "type": "Imperative verb contraction"}
+        ],
+        "grammar_rule": "Contracted reflexives (ತಕ್ಕೋ -> ತೆಗೆದುಕೊ) and progressive standardizer."
+    },
+    {
+        "id": "UK_007",
+        "region_code": "UK",
+        "region_name_en": "Uttara Kannada / Havyaka (Sirsi-Karwar)",
+        "region_name_kn": "ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ (ಶಿರಸಿ-ಕಾರವಾರ)",
+        "spoken": "ಎಲ್ಲೋರು ಊಟಕ್ಕ ಕೂತ್ಕಂಡ್ರಾ?",
+        "standard": "ಎಲ್ಲರೂ ಊಟಕ್ಕೆ ಕುಳಿತುಕೊಂಡಿರಾ?",
+        "english": "Did everyone sit down for the meal?",
+        "context": "Dining room query",
+        "vocabulary_changes": [
+            {"dialect": "ಎಲ್ಲೋರು", "standard": "ಎಲ್ಲರೂ", "type": "Collective pronoun vowel shift"},
+            {"dialect": "ಊಟಕ್ಕ", "standard": "ಊಟಕ್ಕೆ", "type": "Dative case ending"},
+            {"dialect": "ಕೂತ್ಕಂಡ್ರಾ", "standard": "ಕುಳಿತುಕೊಂಡಿರಾ", "type": "Past honorific verb"}
+        ],
+        "grammar_rule": "Medial cluster resolution (ಕೂತ್ಕಂಡ್ರಾ -> ಕುಳಿತುಕೊಂಡಿರಾ)."
+    },
+    {
+        "id": "UK_008",
+        "region_code": "UK",
+        "region_name_en": "Uttara Kannada / Havyaka (Sirsi-Karwar)",
+        "region_name_kn": "ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ (ಶಿರಸಿ-ಕಾರವಾರ)",
+        "spoken": "ಹೇಳಿದ್ದ ಮಾತು ನಿನಗೆ ನೆನಪಿಲ್ದಾಯಿತಾ?",
+        "standard": "ಹೇಳಿದ ಮಾತು ನಿನಗೆ ನೆನಪಿಲ್ಲವಾಯಿತೇ?",
+        "english": "Did you forget the words that were told?",
+        "context": "Questioning memory",
+        "vocabulary_changes": [
+            {"dialect": "ಹೇಳಿದ್ದ", "standard": "ಹೇಳಿದ", "type": "Relative participle"},
+            {"dialect": "ನೆನಪಿಲ್ದಾಯಿತಾ", "standard": "ನೆನಪಿಲ್ಲವಾಯಿತೇ", "type": "Negative interrogative sandhi"}
+        ],
+        "grammar_rule": "Sandhi euphonic glide insertion (-ಇಲ್ಲವಾಯಿತೇ)."
+    },
+
+    # -------------------------------------------------------------
+    # 4. MYSURU-MANDYA / SOUTHERN (ಮೈಸೂರು-ಮಂಡ್ಯ-ಹಾಸನ)
+    # -------------------------------------------------------------
+    {
+        "id": "SM_001",
+        "region_code": "SM",
+        "region_name_en": "Mysuru-Mandya (South Karnataka)",
+        "region_name_kn": "ಮೈಸೂರು-ಮಂಡ್ಯ (ದಕ್ಷಿಣ ಕರ್ನಾಟಕ)",
+        "spoken": "ಹಂಗ್ಯಾಕೆ ಮಾಡ್ದೆ ಕಣಯ್ಯ ನೀನು?",
+        "standard": "ಹಾಗೇಕೆ ಮಾಡಿದೆ ನೀನು?",
+        "english": "Why did you do like that?",
+        "context": "Friendly reproach",
+        "vocabulary_changes": [
+            {"dialect": "ಹಂಗ್ಯಾಕೆ", "standard": "ಹಾಗೇಕೆ", "type": "Sandhi adverb contraction"},
+            {"dialect": "ಮಾಡ್ದೆ", "standard": "ಮಾಡಿದೆ", "type": "Past verb syncopation"},
+            {"dialect": "ಕಣಯ್ಯ", "standard": "", "type": "Discourse conversational clitic"}
+        ],
+        "grammar_rule": "Colloquial discourse clitic (ಕಣಯ್ಯ / ಕಣ್ರೀ) omitted or normalized in standard prose."
+    },
+    {
+        "id": "SM_002",
+        "region_code": "SM",
+        "region_name_en": "Mysuru-Mandya (South Karnataka)",
+        "region_name_kn": "ಮೈಸೂರು-ಮಂಡ್ಯ (ದಕ್ಷಿಣ ಕರ್ನಾಟಕ)",
+        "spoken": "ಅವನು ತಲೆ ತಿಂತಾವನೆ, ಏನು ಮಾಡೋದು?",
+        "standard": "ಅವನು ತೊಂದರೆ ಕೊಡುತ್ತಿದ್ದಾನೆ, ಏನು ಮಾಡುವುದು?",
+        "english": "He is bothering/annoying, what to do?",
+        "context": "Complaint about a nuisance",
+        "vocabulary_changes": [
+            {"dialect": "ತಲೆ ತಿಂತಾವನೆ", "standard": "ತೊಂದರೆ ಕೊಡುತ್ತಿದ್ದಾನೆ", "type": "Idiomatic expression"},
+            {"dialect": "ಮಾಡೋದು", "standard": "ಮಾಡುವುದು", "type": "Verbal noun"}
+        ],
+        "grammar_rule": "Colloquial idiom (ತಲೆ ತಿನ್ನುವುದು) translated to standard semantic equivalent (ತೊಂದರೆ ಕೊಡುವುದು)."
+    },
+    {
+        "id": "SM_003",
+        "region_code": "SM",
+        "region_name_en": "Mysuru-Mandya (South Karnataka)",
+        "region_name_kn": "ಮೈಸೂರು-ಮಂಡ್ಯ (ದಕ್ಷಿಣ ಕರ್ನಾಟಕ)",
+        "spoken": "ಯಾವಾಗ ಬಂದ್ರಿ ಬೆಂಗಳೂರಿಂದ?",
+        "standard": "ಬೆಂಗಳೂರಿನಿಂದ ಯಾವಾಗ ಬಂದಿರಿ?",
+        "english": "When did you arrive from Bengaluru?",
+        "context": "Greeting arriving guests",
+        "vocabulary_changes": [
+            {"dialect": "ಬಂದ್ರಿ", "standard": "ಬಂದಿರಿ", "type": "Past honorific verb"},
+            {"dialect": "ಬೆಂಗಳೂರಿಂದ", "standard": "ಬೆಂಗಳೂರಿನಿಂದ", "type": "Ablative case suffix"}
+        ],
+        "grammar_rule": "Ablative case marker (-ಇಂದ -> -ನಿಂದ) and subject-adverb word order alignment."
+    },
+    {
+        "id": "SM_004",
+        "region_code": "SM",
+        "region_name_en": "Mysuru-Mandya (South Karnataka)",
+        "region_name_kn": "ಮೈಸೂರು-ಮಂಡ್ಯ (ದಕ್ಷಿಣ ಕರ್ನಾಟಕ)",
+        "spoken": "ಅವನು ಹೋಗ್ಬಿಟ್ಟವನೆ, ಇನ್ಯಾವಾಗ ಬರ್ತಾನೋ.",
+        "standard": "ಅವನು ಹೋಗಿಬಿಟ್ಟಿದ್ದಾನೆ, ಇನ್ನಾವಾಗ ಬರುತ್ತಾನೋ.",
+        "english": "He has already left, who knows when he will return.",
+        "context": "Departure note",
+        "vocabulary_changes": [
+            {"dialect": "ಹೋಗ್ಬಿಟ್ಟವನೆ", "standard": "ಹೋಗಿಬಿಟ್ಟಿದ್ದಾನೆ", "type": "Compound past verb"},
+            {"dialect": "ಇನ್ಯಾವಾಗ", "standard": "ಇನ್ನಾವಾಗ", "type": "Adverb sandhi"},
+            {"dialect": "ಬರ್ತಾನೋ", "standard": "ಬರುತ್ತಾನೋ", "type": "Future uncertain verb"}
+        ],
+        "grammar_rule": "Southern Karnataka auxiliary verb contraction (-ಬಿಟ್ಟವನೆ -> -ಬಿಟ್ಟಿದ್ದಾನೆ)."
+    },
+    {
+        "id": "SM_005",
+        "region_code": "SM",
+        "region_name_en": "Mysuru-Mandya (South Karnataka)",
+        "region_name_kn": "ಮೈಸೂರು-ಮಂಡ್ಯ (ದಕ್ಷಿಣ ಕರ್ನಾಟಕ)",
+        "spoken": "ಏನ್ ಸಮಾಚಾರ ಕಣ್ರೀ, ಆರಾಮಾ?",
+        "standard": "ಏನು ಸಮಾಚಾರ, ಕ್ಷೇಮವೇ?",
+        "english": "What is the news, are you doing well?",
+        "context": "Casual street greeting",
+        "vocabulary_changes": [
+            {"dialect": "ಏನ್", "standard": "ಏನು", "type": "Pronoun truncation"},
+            {"dialect": "ಕಣ್ರೀ", "standard": "", "type": "Polite particle clitic"},
+            {"dialect": "ಆರಾಮಾ", "standard": "ಕ್ಷೇಮವೇ", "type": "Interrogative health inquiry"}
+        ],
+        "grammar_rule": "Colloquial health greeting standardized to formal Kannada question."
+    },
+    {
+        "id": "SM_006",
+        "region_code": "SM",
+        "region_name_en": "Mysuru-Mandya (South Karnataka)",
+        "region_name_kn": "ಮೈಸೂರು-ಮಂಡ್ಯ (ದಕ್ಷಿಣ ಕರ್ನಾಟಕ)",
+        "spoken": "ನೀವ್ ಹೇಳ್ದಂಗೆ ನಾವು ಮಾಡ್ತೀವಿ.",
+        "standard": "ನೀವು ಹೇಳಿದಂತೆ ನಾವು ಮಾಡುತ್ತೇವೆ.",
+        "english": "We will do as you have said.",
+        "context": "Agreement",
+        "vocabulary_changes": [
+            {"dialect": "ನೀವ್", "standard": "ನೀವು", "type": "Pronoun vowel"},
+            {"dialect": "ಹೇಳ್ದಂಗೆ", "standard": "ಹೇಳಿದಂತೆ", "type": "Comparative postposition"},
+            {"dialect": "ಮಾಡ್ತೀವಿ", "standard": "ಮಾಡುತ್ತೇವೆ", "type": "First person plural future verb"}
+        ],
+        "grammar_rule": "Colloquial comparative (-ಅಂಗೆ -> -ಅಂತೆ) and syncopated verb restoration."
+    },
+    {
+        "id": "SM_007",
+        "region_code": "SM",
+        "region_name_en": "Mysuru-Mandya (South Karnataka)",
+        "region_name_kn": "ಮೈಸೂರು-ಮಂಡ್ಯ (ದಕ್ಷಿಣ ಕರ್ನಾಟಕ)",
+        "spoken": "ಅದನ್ನ ಅಲ್ಲೇ ಇಟ್ಬುಟ್ಟು ಬಾ.",
+        "standard": "ಅದನ್ನು ಅಲ್ಲೇ ಇಟ್ಟುಬಿಟ್ಟು ಬಾ.",
+        "english": "Leave that right there and come.",
+        "context": "Instruction",
+        "vocabulary_changes": [
+            {"dialect": "ಅದನ್ನ", "standard": "ಅದನ್ನು", "type": "Accusative vowel shortening"},
+            {"dialect": "ಇಟ್ಬುಟ್ಟು", "standard": "ಇಟ್ಟುಬಿಟ್ಟು", "type": "Compound gerund contraction"}
+        ],
+        "grammar_rule": "Accusative suffix ending (-ಅನ್ನ -> -ಅನ್ನು) and internal cluster resolution."
+    },
+    {
+        "id": "SM_008",
+        "region_code": "SM",
+        "region_name_en": "Mysuru-Mandya (South Karnataka)",
+        "region_name_kn": "ಮೈಸೂರು-ಮಂಡ್ಯ (ದಕ್ಷಿಣ ಕರ್ನಾಟಕ)",
+        "spoken": "ಅಷ್ಟೊಂದು ರೇಗಾಡಬೇಡ ಸುಮ್ನಿರು.",
+        "standard": "ಅಷ್ಟೊಂದು ಕೋಪಿಸಿಕೊಳ್ಳಬೇಡ, ಸುಮ್ಮನಿರು.",
+        "english": "Do not get so angry, stay quiet.",
+        "context": "Pacifying someone",
+        "vocabulary_changes": [
+            {"dialect": "ರೇಗಾಡಬೇಡ", "standard": "ಕೋಪಿಸಿಕೊಳ್ಳಬೇಡ", "type": "Colloquial negative verb"},
+            {"dialect": "ಸುಮ್ನಿರು", "standard": "ಸುಮ್ಮನಿರು", "type": "Adverb vowel syncopation"}
+        ],
+        "grammar_rule": "Colloquial emotional verb (ರೇಗಾಡು -> ಕೋಪಿಸಿಕೊ) and adverb syncopation repair."
+    },
+    {
+        "id": "SM_009",
+        "region_code": "SM",
+        "region_name_en": "Mysuru-Mandya (South Karnataka)",
+        "region_name_kn": "ಮೈಸೂರು-ಮಂಡ್ಯ (ದಕ್ಷಿಣ ಕರ್ನಾಟಕ)",
+        "spoken": "ನಾವೆಲ್ಲಾ ಒಂದೇ ಕಡೆ ಸೇರ್ಕಂಡಿದ್ವಿ.",
+        "standard": "ನಾವೆಲ್ಲರೂ ಒಂದೇ ಸ್ಥಳದಲ್ಲಿ ಸೇರಿಕೊಂಡಿದ್ದೆವು.",
+        "english": "We all had gathered at the same place.",
+        "context": "Recalling a gathering",
+        "vocabulary_changes": [
+            {"dialect": "ನಾವೆಲ್ಲಾ", "standard": "ನಾವೆಲ್ಲರೂ", "type": "Emphatic pronoun"},
+            {"dialect": "ಕಡೆ", "standard": "ಸ್ಥಳದಲ್ಲಿ", "type": "Location noun"},
+            {"dialect": "ಸೇರ್ಕಂಡಿದ್ವಿ", "standard": "ಸೇರಿಕೊಂಡಿದ್ದೆವು", "type": "Past first person plural"}
+        ],
+        "grammar_rule": "Reflexive past verb contraction (-ಕಂಡಿದ್ವಿ -> -ಕೊಂಡಿದ್ದೆವು)."
+    },
+    {
+        "id": "SM_010",
+        "region_code": "SM",
+        "region_name_en": "Mysuru-Mandya (South Karnataka)",
+        "region_name_kn": "ಮೈಸೂರು-ಮಂಡ್ಯ (ದಕ್ಷಿಣ ಕರ್ನಾಟಕ)",
+        "spoken": "ಇನ್ನೇನ್ ಮಾಡೋಕಾಗುತ್ತೆ ಹೇಳಿ?",
+        "standard": "ಇನ್ನೇನು ಮಾಡಲು ಸಾಧ್ಯ ಹೇಳಿ?",
+        "english": "What else is possible to do, tell me?",
+        "context": "Helplessness",
+        "vocabulary_changes": [
+            {"dialect": "ಇನ್ನೇನ್", "standard": "ಇನ್ನೇನು", "type": "Pronoun truncation"},
+            {"dialect": "ಮಾಡೋಕಾಗುತ್ತೆ", "standard": "ಮಾಡಲು ಸಾಧ್ಯ", "type": "Modal verbal noun compound"}
+        ],
+        "grammar_rule": "Colloquial potentiality compound (-ಓಕಾಗುತ್ತೆ -> -ಲು ಸಾಧ್ಯ)."
+    }
+]
+
+# Add more variations to bring the corpus to a solid 60+ core carefully reviewed pairs
+EXTRA_PAIRS = [
+    # More North Karnataka
+    {
+        "id": "NK_021",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಇವತ್ತಿನ ದಿನ ಬರೀ ಸುಸ್ತಾಗಾಕತ್ತೈತಿ.",
+        "standard": "ಇಂದಿನ ದಿನ ಕೇವಲ ಆಯಾಸವಾಗುತ್ತಿದೆ.",
+        "english": "Today I am just feeling exhausted.",
+        "context": "Fatigue",
+        "vocabulary_changes": [
+            {"dialect": "ಇವತ್ತಿನ", "standard": "ಇಂದಿನ", "type": "Adjective"},
+            {"dialect": "ಸುಸ್ತಾಗಾಕತ್ತೈತಿ", "standard": "ಆಯಾಸವಾಗುತ್ತಿದೆ", "type": "Verb"}
+        ],
+        "grammar_rule": "Continuous aspect normalization (-ಆಕತ್ತೈತಿ -> -ಆಗುತ್ತಿದೆ)."
+    },
+    {
+        "id": "NK_022",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಅವ್ರು ನಮ್ಮ ಜೊತಿ ಮಾತಾಡಂಗಿಲ್ಲ.",
+        "standard": "ಅವರು ನಮ್ಮ ಜೊತೆ ಮಾತನಾಡುವುದಿಲ್ಲ.",
+        "english": "They do not speak with us.",
+        "context": "Social observation",
+        "vocabulary_changes": [
+            {"dialect": "ಅವ್ರು", "standard": "ಅವರು", "type": "Pronoun"},
+            {"dialect": "ಜೊತಿ", "standard": "ಜೊತೆ", "type": "Postposition"},
+            {"dialect": "ಮಾತಾಡಂಗಿಲ್ಲ", "standard": "ಮಾತನಾಡುವುದಿಲ್ಲ", "type": "Negative habitual verb"}
+        ],
+        "grammar_rule": "Dialect negative habitual suffix (-ಅಂಗಿಲ್ಲ -> -ಉವುದಿಲ್ಲ)."
+    },
+    {
+        "id": "NK_023",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಅಲ್ಲೇನ್ ಇರ್ತಾನ ಅವನು?",
+        "standard": "ಅವನು ಅಲ್ಲಿಯೇ ಇರುತ್ತಾನೆಯೇ?",
+        "english": "Does he stay right there?",
+        "context": "Location inquiry",
+        "vocabulary_changes": [
+            {"dialect": "ಅಲ್ಲೇನ್", "standard": "ಅಲ್ಲಿಯೇ", "type": "Adverb + interrogative"},
+            {"dialect": "ಇರ್ತಾನ", "standard": "ಇರುತ್ತಾನೆಯೇ", "type": "Habitual verb"}
+        ],
+        "grammar_rule": "Interrogative suffix standardization."
+    },
+    {
+        "id": "NK_024",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಹಿಂಗ್ಯಾಕ್ ಸಿಟ್ಟು ಮಾಡ್ಕೋತೀರಿ?",
+        "standard": "ಏಕೆ ಹೀಗೆ ಕೋಪಿಸಿಕೊಳ್ಳುತ್ತೀರಿ?",
+        "english": "Why are you getting angry like this?",
+        "context": "Calming someone",
+        "vocabulary_changes": [
+            {"dialect": "ಹಿಂಗ್ಯಾಕ್", "standard": "ಏಕೆ ಹೀಗೆ", "type": "Adverbial cluster"},
+            {"dialect": "ಸಿಟ್ಟು ಮಾಡ್ಕೋತೀರಿ", "standard": "ಕೋಪಿಸಿಕೊಳ್ಳುತ್ತೀರಿ", "type": "Reflexive verb"}
+        ],
+        "grammar_rule": "Reflexive verb contraction (-ಕೋತೀರಿ -> -ಕೊಳ್ಳುತ್ತೀರಿ)."
+    },
+    {
+        "id": "NK_025",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ನಾಳಿಕಿ ಬೆಳಗ್ಗೆ ಬರ್ತಾನಂತೆ ಅವ.",
+        "standard": "ಅವನು ನಾಳೆ ಬೆಳಿಗ್ಗೆ ಬರುತ್ತಾನಂತೆ.",
+        "english": "Apparently he will come tomorrow morning.",
+        "context": "Reported news",
+        "vocabulary_changes": [
+            {"dialect": "ನಾಳಿಕಿ", "standard": "ನಾಳೆ", "type": "Adverb"},
+            {"dialect": "ಬರ್ತಾನಂತೆ", "standard": "ಬರುತ್ತಾನಂತೆ", "type": "Evidential verb"},
+            {"dialect": "ಅವ", "standard": "ಅವನು", "type": "Pronoun"}
+        ],
+        "grammar_rule": "Word order correction and pronoun standard form."
+    },
+    # More Coastal / Kundagannada
+    {
+        "id": "CO_013",
+        "region_code": "CO",
+        "region_name_en": "Coastal / Kundagannada (Mangaluru)",
+        "region_name_kn": "ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (ಮಂಗಳೂರು)",
+        "spoken": "ಇಲ್ಲಿಗ್ ಯಾಕ್ ಬಂದೆ ಮಾರೆ?",
+        "standard": "ಇಲ್ಲಿಗೆ ಏಕೆ ಬಂದೆ ಗೆಳೆಯ?",
+        "english": "Why did you come here, friend?",
+        "context": "Greeting",
+        "vocabulary_changes": [
+            {"dialect": "ಇಲ್ಲಿಗ್", "standard": "ಇಲ್ಲಿಗೆ", "type": "Dative"},
+            {"dialect": "ಯಾಕ್", "standard": "ಏಕೆ", "type": "Interrogative"},
+            {"dialect": "ಮಾರೆ", "standard": "ಗೆಳೆಯ", "type": "Vocative"}
+        ],
+        "grammar_rule": "Dative vowel restoration and vocative translation."
+    },
+    {
+        "id": "CO_014",
+        "region_code": "CO",
+        "region_name_en": "Coastal / Kundagannada (Mangaluru)",
+        "region_name_kn": "ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (ಮಂಗಳೂರು)",
+        "spoken": "ಆ ಮನುಷ್ಯ ಬಾರೀ ಹಟಮಾರಿ ಕಂಡ್ರಾ.",
+        "standard": "ಆ ಮನುಷ್ಯ ತುಂಬಾ ಹಠಮಾರಿ.",
+        "english": "That person is very stubborn.",
+        "context": "Personality description",
+        "vocabulary_changes": [
+            {"dialect": "ಬಾರೀ", "standard": "ತುಂಬಾ", "type": "Intensifier"},
+            {"dialect": "ಕಂಡ್ರಾ", "standard": "", "type": "Discourse marker"}
+        ],
+        "grammar_rule": "Discourse tag deletion."
+    },
+    {
+        "id": "CO_015",
+        "region_code": "CO",
+        "region_name_en": "Coastal / Kundagannada (Mangaluru)",
+        "region_name_kn": "ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (ಮಂಗಳೂರು)",
+        "spoken": "ನಾನ್ ಇವತ್ತು ಪೇಟೆಗ್ ಹೋಗ್ತಿಲ್ಲ.",
+        "standard": "ನಾನು ಇಂದು ನಗರಕ್ಕೆ ಹೋಗುತ್ತಿಲ್ಲ.",
+        "english": "I am not going to the town market today.",
+        "context": "Daily schedule",
+        "vocabulary_changes": [
+            {"dialect": "ನಾನ್", "standard": "ನಾನು", "type": "Pronoun"},
+            {"dialect": "ಇವತ್ತು", "standard": "ಇಂದು", "type": "Time adverb"},
+            {"dialect": "ಪೇಟೆಗ್", "standard": "ನಗರಕ್ಕೆ", "type": "Noun + dative"},
+            {"dialect": "ಹೋಗ್ತಿಲ್ಲ", "standard": "ಹೋಗುತ್ತಿಲ್ಲ", "type": "Negative continuous verb"}
+        ],
+        "grammar_rule": "Standardization of negative present progressive."
+    },
+    # More Uttara Kannada
+    {
+        "id": "UK_009",
+        "region_code": "UK",
+        "region_name_en": "Uttara Kannada / Havyaka (Sirsi-Karwar)",
+        "region_name_kn": "ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ (ಶಿರಸಿ-ಕಾರವಾರ)",
+        "spoken": "ನೀಂ ಯಾವಾಗ ಬತ್ತಿ ಮನೆಗೆ?",
+        "standard": "ನೀನು ಮನೆಗೆ ಯಾವಾಗ ಬರುತ್ತೀಯ?",
+        "english": "When will you come home?",
+        "context": "Home query",
+        "vocabulary_changes": [
+            {"dialect": "ನೀಂ", "standard": "ನೀನು", "type": "Pronoun"},
+            {"dialect": "ಬತ್ತಿ", "standard": "ಬರುತ್ತೀಯ", "type": "Second person future verb"}
+        ],
+        "grammar_rule": "Second person future ending (-ತಿ -> -ತೀಯ)."
+    },
+    {
+        "id": "UK_010",
+        "region_code": "UK",
+        "region_name_en": "Uttara Kannada / Havyaka (Sirsi-Karwar)",
+        "region_name_kn": "ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ (ಶಿರಸಿ-ಕಾರವಾರ)",
+        "spoken": "ಅದನ್ನ ಮುಟ್ಟಬೇಡ, ಹಾಳಾಪೋದು.",
+        "standard": "ಅದನ್ನು ಮುಟ್ಟಬೇಡ, ಹಾಳಾಗುವುದು.",
+        "english": "Do not touch that, it will get spoiled.",
+        "context": "Caution",
+        "vocabulary_changes": [
+            {"dialect": "ಅದನ್ನ", "standard": "ಅದನ್ನು", "type": "Accusative"},
+            {"dialect": "ಹಾಳಾಪೋದು", "standard": "ಹಾಳಾಗುವುದು", "type": "Future verbal noun"}
+        ],
+        "grammar_rule": "Havyaka future verbal noun (-ಆಪೋದು -> -ಆಗುವುದು)."
+    },
+    # More Mysuru-Mandya
+    {
+        "id": "SM_011",
+        "region_code": "SM",
+        "region_name_en": "Mysuru-Mandya (South Karnataka)",
+        "region_name_kn": "ಮೈಸೂರು-ಮಂಡ್ಯ (ದಕ್ಷಿಣ ಕರ್ನಾಟಕ)",
+        "spoken": "ಅಯ್ಯೋ ಹಂಗೇನಿಲ್ಲ ಕಣ್ರೀ ಸುಮ್ಮನಿರಿ.",
+        "standard": "ಹಾಗೇನೂ ಇಲ್ಲ, ಸುಮ್ಮನಿರಿ.",
+        "english": "It is nothing like that, please stay calm.",
+        "context": "Reassurance",
+        "vocabulary_changes": [
+            {"dialect": "ಹಂಗೇನಿಲ್ಲ", "standard": "ಹಾಗೇನೂ ಇಲ್ಲ", "type": "Compound negation"},
+            {"dialect": "ಕಣ್ರೀ", "standard": "", "type": "Particle"}
+        ],
+        "grammar_rule": "Particle detachment and sandhi resolution."
+    },
+    {
+        "id": "SM_012",
+        "region_code": "SM",
+        "region_name_en": "Mysuru-Mandya (South Karnataka)",
+        "region_name_kn": "ಮೈಸೂರು-ಮಂಡ್ಯ (ದಕ್ಷಿಣ ಕರ್ನಾಟಕ)",
+        "spoken": "ಅವನು ಬರ್ತಾನೋ ಇಲ್ವೋ ಗೊತ್ತಿಲ್ಲ.",
+        "standard": "ಅವನು ಬರುತ್ತಾನೋ ಇಲ್ಲವೋ ತಿಳಿಯದು.",
+        "english": "It is not known whether he will come or not.",
+        "context": "Doubt",
+        "vocabulary_changes": [
+            {"dialect": "ಬರ್ತಾನೋ", "standard": "ಬರುತ್ತಾನೋ", "type": "Alternative verb"},
+            {"dialect": "ಇಲ್ವೋ", "standard": "ಇಲ್ಲವೋ", "type": "Alternative negation"},
+            {"dialect": "ಗೊತ್ತಿಲ್ಲ", "standard": "ತಿಳಿಯದು", "type": "Formal negative modal"}
+        ],
+        "grammar_rule": "Alternative interrogative particle standardization."
+    }
+]
+
+# -------------------------------------------------------------
+# 5. KALYANA KARNATAKA (ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ - ಕಲಬುರಗಿ, ಬೀದರ್, ರಾಯಚೂರು)
+# -------------------------------------------------------------
+KALYANA_KARNATAKA_PAIRS = [
+    {
+        "id": "KK_001",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ಅವನು ಸಾಲಿಗೆ ಹೋಗಲಿಕ್ಕತ್ತಾನ.",
+        "standard": "ಅವನು ಶಾಲೆಗೆ ಹೋಗುತ್ತಿದ್ದಾನೆ.",
+        "english": "He is going to school.",
+        "context": "Education / Everyday routine",
+        "vocabulary_changes": [
+            {"dialect": "ಸಾಲಿಗೆ", "standard": "ಶಾಲೆಗೆ", "type": "Sibilant regional shift"},
+            {"dialect": "ಹೋಗಲಿಕ್ಕತ್ತಾನ", "standard": "ಹೋಗುತ್ತಿದ್ದಾನೆ", "type": "Continuous aspect"}
+        ],
+        "grammar_rule": "Deccan sibilant shift (ಸಾಲಿ -> ಶಾಲೆ) and continuous suffix (-ಲಿಕ್ಕತ್ತಾನ -> -ುತ್ತಿದ್ದಾನೆ)."
+    },
+    {
+        "id": "KK_002",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ದೋಸ್ತ್, ನನಗ ಸ್ವಲ್ಪ ರೊಕ್ಕ ಕೊಡತಿಯಾ?",
+        "standard": "ಗೆಳೆಯ, ನನಗೆ ಸ್ವಲ್ಪ ಹಣ ಕೊಡುತ್ತೀಯಾ?",
+        "english": "Friend, will you give me some money?",
+        "context": "Casual financial request",
+        "vocabulary_changes": [
+            {"dialect": "ದೋಸ್ತ್", "standard": "ಗೆಳೆಯ", "type": "Colloquial vocative"},
+            {"dialect": "ನನಗ", "standard": "ನನಗೆ", "type": "Dative case"},
+            {"dialect": "ರೊಕ್ಕ", "standard": "ಹಣ", "type": "Currency noun"},
+            {"dialect": "ಕೊಡತಿಯಾ", "standard": "ಕೊಡುತ್ತೀಯಾ", "type": "Interrogative inflection"}
+        ],
+        "grammar_rule": "Loanword replacement (ದೋಸ್ತ್ -> ಗೆಳೆಯ) and currency normalization (ರೊಕ್ಕ -> ಹಣ)."
+    },
+    {
+        "id": "KK_003",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ಹುಡುಗ್ಯಾ ಮನ್ಯಾಗ ಕೂತು ಊಟ ಮಾಡಲಿಕ್ಕತ್ತಾನ.",
+        "standard": "ಹುಡುಗನು ಮನೆಯಲ್ಲಿ ಕುಳಿತು ಊಟ ಮಾಡುತ್ತಿದ್ದಾನೆ.",
+        "english": "The boy is sitting at home and eating.",
+        "context": "Household description",
+        "vocabulary_changes": [
+            {"dialect": "ಹುಡುಗ್ಯಾ", "standard": "ಹುಡುಗನು", "type": "Noun inflection"},
+            {"dialect": "ಮನ್ಯಾಗ", "standard": "ಮನೆಯಲ್ಲಿ", "type": "Locative case"},
+            {"dialect": "ಮಾಡಲಿಕ್ಕತ್ತಾನ", "standard": "ಮಾಡುತ್ತಿದ್ದಾನೆ", "type": "Continuous verb"}
+        ],
+        "grammar_rule": "Locative suffix normalization (-ಆಗ -> -ನಲ್ಲಿ) and continuous aspect form."
+    },
+    {
+        "id": "KK_004",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ಅವ್ರು ಕಲ್ಬುರ್ಗಿಯಿಂದ ಬಂದ್ಯಾರ.",
+        "standard": "ಅವರು ಕಲಬುರ್ಗಿಯಿಂದ ಬಂದಿದ್ದಾರೆ.",
+        "english": "They have arrived from Kalaburagi.",
+        "context": "Travel / Family news",
+        "vocabulary_changes": [
+            {"dialect": "ಅವ್ರು", "standard": "ಅವರು", "type": "Pronoun contraction"},
+            {"dialect": "ಕಲ್ಬುರ್ಗಿಯಿಂದ", "standard": "ಕಲಬುರ್ಗಿಯಿಂದ", "type": "Toponym vowel harmony"},
+            {"dialect": "ಬಂದ್ಯಾರ", "standard": "ಬಂದಿದ್ದಾರೆ", "type": "Third plural perfective"}
+        ],
+        "grammar_rule": "Third-person plural perfective suffix (-್ಯಾರ -> -ಿದ್ದಾರೆ)."
+    },
+    {
+        "id": "KK_005",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ನಾನು ಕೆಲಸ ಮುಗಿಸಿ ಬಂದೀನಿ.",
+        "standard": "ನಾನು ಕೆಲಸ ಮುಗಿಸಿ ಬಂದಿದ್ದೇನೆ.",
+        "english": "I have finished the work and come.",
+        "context": "Work update",
+        "vocabulary_changes": [
+            {"dialect": "ಬಂದೀನಿ", "standard": "ಬಂದಿದ್ದೇನೆ", "type": "First person perfective"}
+        ],
+        "grammar_rule": "First-person singular perfective suffix (-ೀನಿ -> -ಿದ್ದೇನೆ)."
+    },
+    {
+        "id": "KK_006",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ಜಲ್ದಿ ಬಾ, ಬಸ್ಸಿನ ವಖ್ತ್ ಆತು.",
+        "standard": "ಬೇಗ ಬಾ, ಬಸ್ಸಿನ ಸಮಯವಾಯಿತು.",
+        "english": "Come quickly, it is time for the bus.",
+        "context": "Urgent travel",
+        "vocabulary_changes": [
+            {"dialect": "ಜಲ್ದಿ", "standard": "ಬೇಗ", "type": "Manner adverb"},
+            {"dialect": "ವಖ್ತ್", "standard": "ಸಮಯ", "type": "Temporal noun"},
+            {"dialect": "ಆತು", "standard": "ಆಯಿತು", "type": "Past verb"}
+        ],
+        "grammar_rule": "Regional time/speed adverbs standardized to textbook forms."
+    },
+    {
+        "id": "KK_007",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ಏನ್ ದೋಸ್ತ್ರ, ಬಹಳ ದಿನ ಆದ್ಮೇಲೆ ಕಾಣ್ಸಿದ್ರಿ.",
+        "standard": "ಏನು ಗೆಳೆಯರೇ, ಬಹಳ ದಿನಗಳ ನಂತರ ಕಾಣಿಸಿಕೊಂಡಿರಿ.",
+        "english": "What friends, you appeared after many days.",
+        "context": "Reunion greeting",
+        "vocabulary_changes": [
+            {"dialect": "ದೋಸ್ತ್ರ", "standard": "ಗೆಳೆಯರೇ", "type": "Plural vocative"},
+            {"dialect": "ಆದ್ಮೇಲೆ", "standard": "ನಂತರ", "type": "Postposition"},
+            {"dialect": "ಕಾಣ್ಸಿದ್ರಿ", "standard": "ಕಾಣಿಸಿಕೊಂಡಿರಿ", "type": "Reflexive past"}
+        ],
+        "grammar_rule": "Vocative plural normalization and formal reflexive verb rewrite."
+    },
+    {
+        "id": "KK_008",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ಅಕಿ ಬ್ಯಾರೆ ಊರಿಗೆ ಹೊಂಟಾಳ.",
+        "standard": "ಅವಳು ಬೇರೆ ಊರಿಗೆ ಹೊರಟಿದ್ದಾಳೆ.",
+        "english": "She is leaving for another town.",
+        "context": "Travel plan",
+        "vocabulary_changes": [
+            {"dialect": "ಅಕಿ", "standard": "ಅವಳು", "type": "Feminine pronoun"},
+            {"dialect": "ಬ್ಯಾರೆ", "standard": "ಬೇರೆ", "type": "Adjective"},
+            {"dialect": "ಹೊಂಟಾಳ", "standard": "ಹೊರಟಿದ್ದಾಳೆ", "type": "Continuous verb"}
+        ],
+        "grammar_rule": "Pronoun standardization and vowel harmony restoration (ಬ್ಯಾರೆ -> ಬೇರೆ)."
+    },
+    {
+        "id": "KK_009",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ಅಲ್ಲಿ ಬಾಳಾ ತಕ್ಲಿಫ್ ಐತಿ, ಹೋಗ್ಬ್ಯಾಡ್ರಿ.",
+        "standard": "ಅಲ್ಲಿ ತುಂಬಾ ತೊಂದರೆ ಇದೆ, ಹೋಗಬೇಡಿ.",
+        "english": "There is a lot of trouble there, please do not go.",
+        "context": "Friendly warning",
+        "vocabulary_changes": [
+            {"dialect": "ಬಾಳಾ", "standard": "ತುಂಬಾ", "type": "Adverbial modifier"},
+            {"dialect": "ತಕ್ಲಿಫ್", "standard": "ತೊಂದರೆ", "type": "Abstract noun"},
+            {"dialect": "ಐತಿ", "standard": "ಇದೆ", "type": "Copula"},
+            {"dialect": "ಹೋಗ್ಬ್ಯಾಡ್ರಿ", "standard": "ಹೋಗಬೇಡಿ", "type": "Negative imperative"}
+        ],
+        "grammar_rule": "Deccan loanword replacement and honorific prohibitive verb normalization."
+    },
+    {
+        "id": "KK_010",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ಸಂತೇಲಿ ತರಕಾರಿ ತರಾಕ ಹೊಂಟೀನಿ.",
+        "standard": "ಸಂತೆಯಲ್ಲಿ ತರಕಾರಿ ತರಲು ಹೊರಟಿದ್ದೇನೆ.",
+        "english": "I am heading out to bring vegetables from the market.",
+        "context": "Shopping errand",
+        "vocabulary_changes": [
+            {"dialect": "ಸಂತೇಲಿ", "standard": "ಸಂತೆಯಲ್ಲಿ", "type": "Locative contraction"},
+            {"dialect": "ತರಾಕ", "standard": "ತರಲು", "type": "Purposive infinitive"},
+            {"dialect": "ಹೊಂಟೀನಿ", "standard": "ಹೊರಟಿದ್ದೇನೆ", "type": "First person continuous"}
+        ],
+        "grammar_rule": "Locative sandhi restoration and purposive infinitive (-ಾಕ -> -ಲು)."
+    },
+    {
+        "id": "KK_011",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ಗಿಂಡ್ಯಾಗ ನೀರು ತಕ್ಕೊಂಡು ಬಾರೋ.",
+        "standard": "ಚೊಂಬಿನಲ್ಲಿ ನೀರು ತೆಗೆದುಕೊಂಡು ಬಾ.",
+        "english": "Bring water in the small pitcher.",
+        "context": "Household instruction",
+        "vocabulary_changes": [
+            {"dialect": "ಗಿಂಡ್ಯಾಗ", "standard": "ಚೊಂಬಿನಲ್ಲಿ", "type": "Regional noun + locative"},
+            {"dialect": "ತಕ್ಕೊಂಡು", "standard": "ತೆಗೆದುಕೊಂಡು", "type": "Compound gerund"},
+            {"dialect": "ಬಾರೋ", "standard": "ಬಾ", "type": "Informal imperative clitic"}
+        ],
+        "grammar_rule": "Regional utensil noun substitution and imperative particle detachment."
+    },
+    {
+        "id": "KK_012",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ಇವತ್ತಿನ ದಿನ ಖೂಬ್ ಗಮ್ಮತ್ ಆತು ನೋಡ್ರಿ.",
+        "standard": "ಇಂದಿನ ದಿನ ತುಂಬಾ ಮೋಜಾಯಿತು ನೋಡಿ.",
+        "english": "Today was a lot of fun, you see.",
+        "context": "Celebration / Festival",
+        "vocabulary_changes": [
+            {"dialect": "ಇವತ್ತಿನ", "standard": "ಇಂದಿನ", "type": "Genitive temporal noun"},
+            {"dialect": "ಖೂಬ್", "standard": "ತುಂಬಾ", "type": "Intensifier"},
+            {"dialect": "ಗಮ್ಮತ್", "standard": "ಮೋಜು", "type": "Noun"},
+            {"dialect": "ಆತು", "standard": "ಆಯಿತು", "type": "Past verb"},
+            {"dialect": "ನೋಡ್ರಿ", "standard": "ನೋಡಿ", "type": "Discourse honorific"}
+        ],
+        "grammar_rule": "Colloquial intensifier-noun cluster normalized to standard Kannada."
+    },
+    {
+        "id": "KK_013",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ಅವನು ಏನು ಮಾತ್ ಆಡಲಿಕ್ಕತ್ತಾನ ತಿಳಿವಲ್ದು.",
+        "standard": "ಅವನು ಏನು ಮಾತನಾಡುತ್ತಿದ್ದಾನೆ ತಿಳಿಯುತ್ತಿಲ್ಲ.",
+        "english": "It is not clear what he is speaking.",
+        "context": "Perplexity",
+        "vocabulary_changes": [
+            {"dialect": "ಮಾತ್ ಆಡಲಿಕ್ಕತ್ತಾನ", "standard": "ಮಾತನಾಡುತ್ತಿದ್ದಾನೆ", "type": "Compound continuous verb"},
+            {"dialect": "ತಿಳಿವಲ್ದು", "standard": "ತಿಳಿಯುತ್ತಿಲ್ಲ", "type": "Negative continuous verb"}
+        ],
+        "grammar_rule": "Continuous aspect fusion and negative continuous verbal suffix (-ವಲ್ದು -> -ಉತ್ತಿಲ್ಲ)."
+    },
+    {
+        "id": "KK_014",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ನಾವ್ರ ಎಲ್ಲಾರೂ ನಾಳಿ ಬೆಳಿಗ್ಗೆ ಹೊರಡ್ತೀವಿ.",
+        "standard": "ನಾವೆಲ್ಲರೂ ನಾಳೆ ಬೆಳಿಗ್ಗೆ ಹೊರಡುತ್ತೇವೆ.",
+        "english": "All of us will set out tomorrow morning.",
+        "context": "Group travel",
+        "vocabulary_changes": [
+            {"dialect": "ನಾವ್ರ", "standard": "ನಾವು", "type": "Pronoun contraction"},
+            {"dialect": "ನಾಳಿ", "standard": "ನಾಳೆ", "type": "Time adverb"},
+            {"dialect": "ಹೊರಡ್ತೀವಿ", "standard": "ಹೊರಡುತ್ತೇವೆ", "type": "First plural future verb"}
+        ],
+        "grammar_rule": "First-person plural future contraction normalized."
+    },
+    {
+        "id": "KK_015",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ಪರೇಶಾನ್ ಆಗ್ಬೇಡ್ರಿ, ಎಲ್ಲಾನೂ ಸರಿ ಆಗ್ತೈತಿ.",
+        "standard": "ಚಿಂತೆ ಮಾಡಬೇಡಿ, ಎಲ್ಲವೂ ಸರಿಯಾಗುತ್ತದೆ.",
+        "english": "Do not worry, everything will become fine.",
+        "context": "Comforting words",
+        "vocabulary_changes": [
+            {"dialect": "ಪರೇಶಾನ್ ಆಗ್ಬೇಡ್ರಿ", "standard": "ಚಿಂತೆ ಮಾಡಬೇಡಿ", "type": "Negative imperative"},
+            {"dialect": "ಎಲ್ಲಾನೂ", "standard": "ಎಲ್ಲವೂ", "type": "Universal quantifier"},
+            {"dialect": "ಆಗ್ತೈತಿ", "standard": "ಆಗುತ್ತದೆ", "type": "Future verb"}
+        ],
+        "grammar_rule": "Neuter future dialect suffix (-ತೈತಿ -> -ತ್ತದೆ) and polite negative imperative."
+    },
+    {
+        "id": "KK_016",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ಅವನು ರೊಕ್ಕ ಇಲ್ದೆ ಪರದಾಡಲಿಕ್ಕತ್ತಾನ.",
+        "standard": "ಅವನು ಹಣವಿಲ್ಲದೆ ಪರದಾಡುತ್ತಿದ್ದಾನೆ.",
+        "english": "He is struggling without money.",
+        "context": "Hardship",
+        "vocabulary_changes": [
+            {"dialect": "ರೊಕ್ಕ", "standard": "ಹಣ", "type": "Noun"},
+            {"dialect": "ಇಲ್ದೆ", "standard": "ಇಲ್ಲದೆ", "type": "Negative participle"},
+            {"dialect": "ಪರದಾಡಲಿಕ್ಕತ್ತಾನ", "standard": "ಪರದಾಡುತ್ತಿದ್ದಾನೆ", "type": "Continuous verb"}
+        ],
+        "grammar_rule": "Lexical normalization and continuous aspect suffix rewrite."
+    },
+    {
+        "id": "KK_017",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ನೀವು ಯಾವಾಗ ಹೊಂಟ್ರಿ ಊರಿಗೆ?",
+        "standard": "ನೀವು ಊರಿಗೆ ಯಾವಾಗ ಹೊರಟಿರಿ?",
+        "english": "When did you set out for your hometown?",
+        "context": "Polite inquiry",
+        "vocabulary_changes": [
+            {"dialect": "ಹೊಂಟ್ರಿ", "standard": "ಹೊರಟಿರಿ", "type": "Second plural past verb"}
+        ],
+        "grammar_rule": "Second person plural honorific past verb normalization."
+    },
+    {
+        "id": "KK_018",
+        "region_code": "KK",
+        "region_name_en": "Kalyana Karnataka (Kalaburagi-Bidar)",
+        "region_name_kn": "ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (ಕಲಬುರಗಿ-ಬೀದರ್)",
+        "spoken": "ಮನ್ಯಾಗ ಎಲ್ಲಾರೂ ಆರಾಮ್ ಇದ್ದಾರಾ?",
+        "standard": "ಮನೆಯಲ್ಲಿ ಎಲ್ಲರೂ ಕ್ಷೇಮವಾಗಿದ್ದಾರೆಯೇ?",
+        "english": "Is everyone at home doing well?",
+        "context": "Family well-being inquiry",
+        "vocabulary_changes": [
+            {"dialect": "ಮನ್ಯಾಗ", "standard": "ಮನೆಯಲ್ಲಿ", "type": "Locative noun"},
+            {"dialect": "ಎಲ್ಲಾರೂ", "standard": "ಎಲ್ಲರೂ", "type": "Pronoun"},
+            {"dialect": "ಆರಾಮ್ ಇದ್ದಾರಾ", "standard": "ಕ್ಷೇಮವಾಗಿದ್ದಾರೆಯೇ", "type": "Copula interrogative"}
+        ],
+        "grammar_rule": "Locative case, vowel quantity, and interrogative copula standardization."
+    }
+]
+
+# Additional cross-regional modal necessity & colloquial pairs
+ADDITIONAL_MODAL_PAIRS = [
+    {
+        "id": "SM_013",
+        "region_code": "SM",
+        "region_name_en": "Mysuru-Mandya (South Karnataka)",
+        "region_name_kn": "ಮೈಸೂರು-ಮಂಡ್ಯ (ದಕ್ಷಿಣ ಕರ್ನಾಟಕ)",
+        "spoken": "ನೀನು ನಾಳೆ ಬೆಳಿಗ್ಗೆ ಆ ಕೆಲಸ ಮಾಡ್ಬೇಕು ಕಣೋ.",
+        "standard": "ನೀನು ನಾಳೆ ಬೆಳಿಗ್ಗೆ ಆ ಕೆಲಸ ಮಾಡಬೇಕು.",
+        "english": "You must do that work tomorrow morning.",
+        "context": "Direct instruction",
+        "vocabulary_changes": [
+            {"dialect": "ಮಾಡ್ಬೇಕು", "standard": "ಮಾಡಬೇಕು", "type": "Modal verb contraction"},
+            {"dialect": "ಕಣೋ", "standard": "", "type": "Discourse particle"}
+        ],
+        "grammar_rule": "Modal necessity contraction (-್ಬೇಕು -> -ಬೇಕು) and discourse particle removal."
+    },
+    {
+        "id": "SM_014",
+        "region_code": "SM",
+        "region_name_en": "Mysuru-Mandya (South Karnataka)",
+        "region_name_kn": "ಮೈಸೂರು-ಮಂಡ್ಯ (ದಕ್ಷಿಣ ಕರ್ನಾಟಕ)",
+        "spoken": "ನನಗೆ ಇವತ್ತು ಅಲ್ಲಿಗೆ ಹೋಗೋಕಾಗಲ್ಲ.",
+        "standard": "ನನಗೆ ಇಂದು ಅಲ್ಲಿಗೆ ಹೋಗಲು ಸಾಧ್ಯವಿಲ್ಲ.",
+        "english": "I cannot go there today.",
+        "context": "Declining an invitation",
+        "vocabulary_changes": [
+            {"dialect": "ಇವತ್ತು", "standard": "ಇಂದು", "type": "Temporal adverb"},
+            {"dialect": "ಹೋಗೋಕಾಗಲ್ಲ", "standard": "ಹೋಗಲು ಸಾಧ್ಯವಿಲ್ಲ", "type": "Impossibility modal"}
+        ],
+        "grammar_rule": "Spoken negative modal to formal infinitive + negative potentiality."
+    },
+    {
+        "id": "CO_016",
+        "region_code": "CO",
+        "region_name_en": "Coastal / Kundagannada (Mangaluru)",
+        "region_name_kn": "ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (ಮಂಗಳೂರು)",
+        "spoken": "ಮಾರೆ, ನಾಳೆ ಬೆಳಿಗ್ಗೆ ಪೇಟೆಗ್ ಹೋಗ್ಬೇಕು.",
+        "standard": "ಗೆಳೆಯ, ನಾಳೆ ಬೆಳಿಗ್ಗೆ ನಗರಕ್ಕೆ ಹೋಗಬೇಕು.",
+        "english": "Friend, we must go to the market tomorrow morning.",
+        "context": "Market plan",
+        "vocabulary_changes": [
+            {"dialect": "ಮಾರೆ", "standard": "ಗೆಳೆಯ", "type": "Vocative"},
+            {"dialect": "ಪೇಟೆಗ್", "standard": "ನಗರಕ್ಕೆ", "type": "Dative noun"},
+            {"dialect": "ಹೋಗ್ಬೇಕು", "standard": "ಹೋಗಬೇಕು", "type": "Modal verb"}
+        ],
+        "grammar_rule": "Vocative translation, dative truncation, and modal necessity normalization."
+    },
+    {
+        "id": "NK_026",
+        "region_code": "NK",
+        "region_name_en": "North Karnataka (Hubballi-Dharwad)",
+        "region_name_kn": "ಉತ್ತರ ಕರ್ನಾಟಕ (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+        "spoken": "ಅವನು ಹೊಲದಾಗ ಕೆಲಸ ಮಾಡಾಕತ್ತಾನ.",
+        "standard": "ಅವನು ಹೊಲದಲ್ಲಿ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದಾನೆ.",
+        "english": "He is working in the agricultural field.",
+        "context": "Farming description",
+        "vocabulary_changes": [
+            {"dialect": "ಹೊಲದಾಗ", "standard": "ಹೊಲದಲ್ಲಿ", "type": "Locative noun"},
+            {"dialect": "ಮಾಡಾಕತ್ತಾನ", "standard": "ಮಾಡುತ್ತಿದ್ದಾನೆ", "type": "Continuous verb"}
+        ],
+        "grammar_rule": "Locative suffix (-ಆಗ -> -ನಲ್ಲಿ) and continuous verb normalization."
+    }
+]
+
+ALL_PAIRS = CORPUS + EXTRA_PAIRS + KALYANA_KARNATAKA_PAIRS + ADDITIONAL_MODAL_PAIRS
+
+def main():
+    target_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(target_dir, "data")
+    os.makedirs(data_dir, exist_ok=True)
+
+    json_path = os.path.join(data_dir, "parallel_corpus.json")
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(ALL_PAIRS, f, ensure_ascii=False, indent=2)
+    print(f"Wrote {len(ALL_PAIRS)} parallel pairs to {json_path}")
+
+    csv_path = os.path.join(data_dir, "parallel_corpus.csv")
+    with open(csv_path, "w", encoding="utf-8", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["id", "region_code", "region_name_en", "region_name_kn", "spoken", "standard", "english", "context", "grammar_rule"])
+        for item in ALL_PAIRS:
+            writer.writerow([
+                item["id"],
+                item["region_code"],
+                item["region_name_en"],
+                item["region_name_kn"],
+                item["spoken"],
+                item["standard"],
+                item["english"],
+                item["context"],
+                item["grammar_rule"]
+            ])
+    print(f"Wrote CSV export to {csv_path}")
+
+if __name__ == "__main__":
+    main()
+
