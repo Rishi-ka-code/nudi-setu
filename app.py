@@ -202,10 +202,9 @@ if "input_val" not in st.session_state:
 
 # --- SIDEBAR (Settings & Info) ---
 with st.sidebar:
-    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Flag_of_Karnataka.svg/240px-Flag_of_Karnataka.svg.png", width=65)
-    st.title("ನುಡಿ ಪರಿವರ್ತಕ")
-    st.markdown("**ಕರ್ನಾಟಕ ಉಪಭಾಷಾ ಸಂಶೋಧನಾ ವೇದಿಕೆ**")
-    st.caption("Universal Karnataka Dialect to Textbook Kannada Platform")
+    st.markdown("## 🌸 ನುಡಿ ಸೇತು")
+    st.markdown("**Modalapada 2.0 | Dept of CS&E - RIT**")
+    st.caption("Problem 1: Regional Dialect to Textbook Kannada Platform")
     
     st.divider()
     st.subheader("⚙️ ಇಂಜಿನ್ ಆಯ್ಕೆ (Engine Mode)")
@@ -232,13 +231,11 @@ with st.sidebar:
         exec_mode = "local"
     
     st.divider()
-    st.markdown("### 📍 ಒಳಗೊಂಡಿರುವ 5 ಪ್ರಮುಖ ಪ್ರಾಂತ್ಯಗಳು:")
+    st.markdown("### 📍 ಸ್ಪರ್ಧೆಯ 3 ಪ್ರಮುಖ ಪ್ರಾಂತ್ಯಗಳು:")
     st.markdown("""
-    1. **ಉತ್ತರ ಕರ್ನಾಟಕ**: ಧಾರವಾಡ, ಹುಬ್ಬಳ್ಳಿ, ಬೆಳಗಾವಿ
-    2. **ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ**: ಕಲಬುರಗಿ, ಬೀದರ್, ರಾಯಚೂರು
-    3. **ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ**: ಮಂಗಳೂರು, ಉಡುಪಿ, ಕುಂದಾಪುರ
-    4. **ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ**: ಶಿರಸಿ, ಕಾರವಾರ, ಗೋಕರ್ಣ
-    5. **ಮೈಸೂರು-ಮಂಡ್ಯ**: ದಕ್ಷಿಣ ಕರ್ನಾಟಕ ಆಡುಮಾತು
+    1. **Hubballi–Dharwad**: ಧಾರವಾಡ, ಹುಬ್ಬಳ್ಳಿ
+    2. **Mangaluru**: ಮಂಗಳೂರು, ಉಡುಪಿ, ಕುಂದಾಪುರ
+    3. **Uttara Kannada**: ಶಿರಸಿ, ಕಾರವಾರ, ಕುಮಟಾ
     """)
 
 # --- MAIN CONTENT ---
@@ -285,31 +282,25 @@ with tab_main:
 
     st.write("")
 
-    # Dialect Selection Bar
-    col_sel1, col_sel2 = st.columns([2, 3])
-    with col_sel1:
-        selected_dialect_choice = st.selectbox(
-            "📍 ಪ್ರಾದೇಶಿಕ ಉಪಭಾಷೆ (Dialect Selection):",
-            options=[
-                "🔍 ಸ್ವಯಂ ಪತ್ತೆ (Auto-Detect Region - ML Trained)",
-                "🌾 Hubballi-Dharwad (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
-                "🌊 Mangaluru (ಮಂಗಳೂರು / ಕರಾವಳಿ)",
-                "🌿 Uttara Kannada (ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ)",
-                "🕌 Kalyana Karnataka (ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ)",
-                "🏛️ Mysuru - Mandya (ಮೈಸೂರು - ಮಂಡ್ಯ)"
-            ],
-            index=0,
-            help="ಸ್ಪರ್ಧೆಯ 3 ಮುಖ್ಯ ಉಪಭಾಷೆಗಳು: Hubballi-Dharwad, Mangaluru, Uttara Kannada."
-        )
+    # Dialect Selection Bar (3 Target Dialects)
+    selected_dialect_choice = st.selectbox(
+        "📍 ಪ್ರಾದೇಶಿಕ ಉಪಭಾಷೆ ಆಯ್ಕೆ (Target Dialect):",
+        options=[
+            "🔍 ಸ್ವಯಂ ಪತ್ತೆ (Auto-Detect Region - ML Trained)",
+            "🌾 Hubballi-Dharwad (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+            "🌊 Mangaluru (ಮಂಗಳೂರು / ಕುಂದಗನ್ನಡ)",
+            "🌿 Uttara Kannada (ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ)"
+        ],
+        index=0,
+        help="Modalapada 2.0 ಸ್ಪರ್ಧೆಯ 3 ಅಧಿಕೃತ ಪ್ರಾಂತ್ಯಗಳು."
+    )
 
     # Region mapping
     region_mapping = {
         "🔍 ಸ್ವಯಂ ಪತ್ತೆ (Auto-Detect Region - ML Trained)": None,
         "🌾 Hubballi-Dharwad (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)": "North Karnataka",
-        "🌊 Mangaluru (ಮಂಗಳೂರು / ಕರಾವಳಿ)": "Coastal / Kundagannada",
-        "🌿 Uttara Kannada (ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ)": "Uttara Kannada / Havyaka",
-        "🕌 Kalyana Karnataka (ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ)": "Kalyana Karnataka",
-        "🏛️ Mysuru - Mandya (ಮೈಸೂರು - ಮಂಡ್ಯ)": "Mysuru-Mandya"
+        "🌊 Mangaluru (ಮಂಗಳೂರು / ಕುಂದಗನ್ನಡ)": "Coastal / Kundagannada",
+        "🌿 Uttara Kannada (ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ)": "Uttara Kannada / Havyaka"
     }
     target_region = region_mapping.get(selected_dialect_choice)
 
@@ -365,11 +356,12 @@ with tab_main:
         if res and res.get("standard_text"):
             match_type = res.get("match_type", "")
             if "Gemini AI" in match_type:
-                badge_html = f'<span class="ai-pill">✨ Gemini AI (gemini-3-flash)</span>'
-            elif res.get("is_auto_detected", True):
-                badge_html = f'<span class="auto-pill">📍 ಪತ್ತೆಯಾದ ಪ್ರಾಂತ್ಯ: {res.get("region_name_kn", "ಸಾಮಾನ್ಯ ಆಡುಮಾತು")} ({int(res.get("confidence", 0.95)*100)}%)</span>'
+                badge_html = f'<span class="ai-pill">✨ Gemini AI (Neural)</span>'
+            elif target_region is None or res.get("is_auto_detected", True):
+                badge_html = f'<span class="auto-pill">📍 ಪತ್ತೆಯಾದ ಪ್ರಾಂತ್ಯ: {res.get("region_name_kn", "ಸಾಮಾನ್ಯ ಆಡುಮಾತು")}</span>'
             else:
-                badge_html = f'<span class="region-pill">🎯 ಆಯ್ಕೆಮಾಡಿದ ಪ್ರಾಂತ್ಯ: {res.get("region_name_kn", "")}</span>'
+                chosen_name = selected_dialect_choice.split("(")[0].strip()
+                badge_html = f'<span class="region-pill">🎯 ಪ್ರಾಂತ್ಯ: {chosen_name}</span>'
 
         st.markdown(f"""
         <div class="card-header-bar">
