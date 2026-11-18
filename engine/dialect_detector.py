@@ -30,6 +30,35 @@ class DialectDetector:
                 self.lexicons = json.load(f)
 
         self.region_keywords = self.markers.get("region_detection_keywords", {})
+        
+        # Load trained ML model if available
+        self.ml_model = None
+        model_path = os.path.join(base_dir, "models", "dialect_classifier.joblib")
+        if os.path.exists(model_path):
+            try:
+                import joblib
+                self.ml_model = joblib.load(model_path)
+            except Exception:
+                self.ml_model = None
+
+    def predict_ml(self, text: str):
+        """
+        Uses trained character n-gram ML pipeline to predict dialect probabilities.
+        """
+        if self.ml_model is not None and text and text.strip():
+            try:
+                probs = self.ml_model.predict_proba([text.strip()])[0]
+                classes = self.ml_model.classes_
+                prob_dict = {cls: round(float(p), 3) for cls, p in zip(classes, probs)}
+                top_idx = int(probs.argmax())
+                return {
+                    "top_dialect": classes[top_idx],
+                    "confidence": round(float(probs[top_idx]), 3),
+                    "distribution": prob_dict
+                }
+            except Exception:
+                return None
+        return None
 
     def detect(self, text: str) -> Dict[str, Any]:
         """

@@ -1,0 +1,19 @@
+speaker_id,dialect,town,age_band,gender,topics_covered,consent_obtained,recording_date
+SPK_HD_01,Hubballi-Dharwad,Hubballi,26-40,Male,"home, market, travel",Yes,2026-11-10
+SPK_HD_02,Hubballi-Dharwad,Dharwad,41-60,Female,"home, festivals, school",Yes,2026-11-10
+SPK_HD_03,Hubballi-Dharwad,Kundgol,60+,Male,"home, market, festivals",Yes,2026-11-11
+SPK_HD_04,Hubballi-Dharwad,Navalgund,18-25,Male,"school, travel, home",Yes,2026-11-11
+SPK_HD_05,Hubballi-Dharwad,Kalghatgi,41-60,Female,"market, travel, festivals",Yes,2026-11-12
+SPK_CO_01,Mangaluru,Mangaluru,26-40,Female,"home, market, travel",Yes,2026-11-11
+SPK_CO_02,Mangaluru,Kundapura,18-25,Male,"school, market, home",Yes,2026-11-12
+SPK_CO_03,Mangaluru,Udupi,41-60,Male,"festivals, travel, market",Yes,2026-11-12
+SPK_CO_04,Mangaluru,Bantwal,60+,Female,"home, festivals, travel",Yes,2026-11-13
+SPK_CO_05,Mangaluru,Puttur,26-40,Male,"market, school, travel",Yes,2026-11-13
+SPK_CO_06,Mangaluru,Karkala,18-25,Female,"school, festivals, home",Yes,2026-11-14
+SPK_UK_01,Uttara Kannada,Sirsi,41-60,Male,"home, market, festivals",Yes,2026-11-12
+SPK_UK_02,Uttara Kannada,Siddapur,60+,Female,"home, festivals, market",Yes,2026-11-13
+SPK_UK_03,Uttara Kannada,Kumta,26-40,Male,"travel, market, school",Yes,2026-11-13
+SPK_UK_04,Uttara Kannada,Karwar,18-25,Female,"school, travel, festivals",Yes,2026-11-14
+SPK_UK_05,Uttara Kannada,Gokarna,41-60,Male,"festivals, travel, home",Yes,2026-11-14
+SPK_UK_06,Uttara Kannada,Honnavar,26-40,Female,"travel, home, market",Yes,2026-11-15
+SPK_UK_07,Uttara Kannada,Ankola,60+,Male,"home, market, festivals",Yes,2026-11-15

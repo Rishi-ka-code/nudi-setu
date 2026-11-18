@@ -1,0 +1,98 @@
+{
+  "accuracy": 0.6508,
+  "std_dev": 0.0402,
+  "total_samples": 315,
+  "classes": [
+    "Hubballi-Dharwad",
+    "Mangaluru",
+    "Uttara Kannada"
+  ],
+  "confusion_matrix": [
+    [
+      90,
+      9,
+      6
+    ],
+    [
+      8,
+      55,
+      42
+    ],
+    [
+      5,
+      40,
+      60
+    ]
+  ],
+  "classification_report": {
+    "Hubballi-Dharwad": {
+      "precision": 0.8737864077669902,
+      "recall": 0.8571428571428571,
+      "f1-score": 0.8653846153846154,
+      "support": 105.0
+    },
+    "Mangaluru": {
+      "precision": 0.5288461538461539,
+      "recall": 0.5238095238095238,
+      "f1-score": 0.5263157894736842,
+      "support": 105.0
+    },
+    "Uttara Kannada": {
+      "precision": 0.5555555555555556,
+      "recall": 0.5714285714285714,
+      "f1-score": 0.5633802816901409,
+      "support": 105.0
+    },
+    "accuracy": 0.6507936507936508,
+    "macro avg": {
+      "precision": 0.6527293723895665,
+      "recall": 0.6507936507936508,
+      "f1-score": 0.6516935621828135,
+      "support": 315.0
+    },
+    "weighted avg": {
+      "precision": 0.6527293723895666,
+      "recall": 0.6507936507936508,
+      "f1-score": 0.6516935621828135,
+      "support": 315.0
+    }
+  },
+  "top_features": {
+    "Hubballi-Dharwad": [
+      "್ರಿ",
+      "ರಿ.",
+      "್ರಿ.",
+      "ಗ ",
+      "ಿ.",
+      "್ರ",
+      "ರಿ",
+      "ರ.",
+      "ಾರ.",
+      "ೈತ"
+    ],
+    "Mangaluru": [
+      "್ ",
+      "ೆ.",
+      "ಮಾರೆ",
+      " ಮಾರೆ",
+      "ಾರೆ.",
+      "ರೆ.",
+      "ಉಂ",
+      " ಉಂ",
+      "ರೆ",
+      "ಾರೆ"
+    ],
+    "Uttara Kannada": [
+      "ಿಯ",
+      "ಸಿ",
+      "ಯ ",
+      "ೆಯ",
+      "ದರ",
+      "ರು.",
+      "ವಾ",
+      "ಿದರ",
+      "ಲಿ ",
+      "ಿಸಿ"
+    ]
+  }
+}

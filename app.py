@@ -244,43 +244,43 @@ with st.sidebar:
 # --- MAIN CONTENT ---
 st.markdown("""
 <div class="app-header">
-    <div class="app-title">🌸 ನುಡಿ ಪರಿವರ್ತಕ (Nudi Parivartaka)</div>
-    <div class="app-subtitle">ಪ್ರಾದೇಶಿಕ ಆಡುಮಾತಿನಿಂದ ಶಿಷ್ಟ ಕನ್ನಡಕ್ಕೆ ಪರಿವರ್ತನೆ & ಅಖಿಲ ಕರ್ನಾಟಕ ಉಪಭಾಷಾ ವಿಶ್ಲೇಷಣೆ</div>
+    <div class="app-title">🌸 ನುಡಿ ಸೇತು (Nudi Setu): Dialect ➔ Textbook Kannada</div>
+    <div class="app-subtitle">Modalapada 2.0 (Dept of CS&E - Ramaiah Institute of Technology) | Problem 1: Dialect to Standard Textbook Kannada</div>
 </div>
 """, unsafe_allow_html=True)
 
 # --- 5 CORE SYSTEM TABS ---
 tab_main, tab_pitch, tab_bench, tab_lex, tab_data = st.tabs([
-    "🌸 ನುಡಿ ಪರಿವರ್ತಕ (Live Converter)",
-    "🏆 ತೀರ್ಪುಗಾರರ ಪ್ರಸ್ತುತಿ (Winning Pitch & Architecture)",
-    "📊 ಮೌಲ್ಯಮಾಪನ & ತರಬೇತಿ (Benchmarks & Training)",
-    "📖 ಪ್ರಾದೇಶಿಕ ನಿಘಂಟು (Dialect Lexicon)",
-    "📁 ದತ್ತಾಂಶ ಸಂಗ್ರಹ (Corpus Download)"
+    "🌸 ನುಡಿ ಸೇತು (Live Converter)",
+    "🏆 ತೀರ್ಪುಗಾರರ ಪ್ರಸ್ತುತಿ (Architecture & Pitch)",
+    "📊 ಮಾದರಿ ತರಬೇತಿ & ಮೌಲ್ಯಮಾಪನ (ML Model & Metrics)",
+    "📖 ಪ್ರಾದೇಶಿಕ ನಿಘಂಟು (Glossary - 130 Entries)",
+    "📁 ದತ್ತಾಂಶ ಸಂಗ್ರಹ & ಸಮ್ಮತಿ (Dataset & Consent)"
 ])
 
 with tab_main:
-    # Quick Suggestion Chips (Exact 1-to-1 match)
-    st.write("##### 💡 ತ್ವರಿತ ಪರೀಕ್ಷಾ ವಾಕ್ಯಗಳು (Quick Test Examples):")
+    # Official Starter Examples from Modalapada 2.0 (Slide 4)
+    st.write("##### 💡 ಅಧಿಕೃತ ಪರೀಕ್ಷಾ ವಾಕ್ಯಗಳು (Starter Examples from Slide 4):")
     col_c1, col_c2, col_c3, col_c4, col_c5 = st.columns(5)
     with col_c1:
-        if st.button("ಅವನು ಬರ್ತಾನ", use_container_width=True):
-            st.session_state["input_val"] = "ಅವನು ಬರ್ತಾನ"
+        if st.button("ಏನ್ರಿ, ಊಟ ಆತೇನ್ರಿ?", use_container_width=True, help="Hubballi-Dharwad starter example"):
+            st.session_state["input_val"] = "ಏನ್ರಿ, ಊಟ ಆತೇನ್ರಿ?"
             st.rerun()
     with col_c2:
-        if st.button("ನಾಳೆ ಹೋಗ್ಬೇಕು", use_container_width=True):
-            st.session_state["input_val"] = "ನಾಳೆ ಹೋಗ್ಬೇಕು"
+        if st.button("ಎಂತ ಮಾಡ್ತಾ ಇದ್ದೀರಿ?", use_container_width=True, help="Mangaluru starter example"):
+            st.session_state["input_val"] = "ಎಂತ ಮಾಡ್ತಾ ಇದ್ದೀರಿ?"
             st.rerun()
     with col_c3:
-        if st.button("ಅವನು ಬರಲ್ಲ", use_container_width=True):
-            st.session_state["input_val"] = "ಅವನು ಬರಲ್ಲ"
+        if st.button("ಹೆಂಗಿದ್ದೀರಿ, ಊಟಕ್ಕೆ ಬರ್ತೀರಾ?", use_container_width=True, help="Uttara Kannada starter example"):
+            st.session_state["input_val"] = "ಹೆಂಗಿದ್ದೀರಿ, ಊಟಕ್ಕೆ ಬರ್ತೀರಾ?"
             st.rerun()
     with col_c4:
-        if st.button("ದೋಸ್ತ್, ರೊಕ್ಕ ಕೊಡತಿಯಾ?", use_container_width=True):
+        if st.button("ದೋಸ್ತ್, ರೊಕ್ಕ ಕೊಡತಿಯಾ?", use_container_width=True, help="Market conversation"):
             st.session_state["input_val"] = "ದೋಸ್ತ್, ರೊಕ್ಕ ಕೊಡತಿಯಾ?"
             st.rerun()
     with col_c5:
-        if st.button("ಎಂತ ಮಾರೆ, ರಜಾನಾ?", use_container_width=True):
-            st.session_state["input_val"] = "ಎಂತ ಮಾರೆ, ರಜಾನಾ?"
+        if st.button("ಅವನು ಇವ್ವತ್ ಬರಾಕತ್ತಾನ", use_container_width=True, help="Aspectual continuous"):
+            st.session_state["input_val"] = "ಅವನು ಇವ್ವತ್ ಬರಾಕತ್ತಾನ."
             st.rerun()
 
     st.write("")
@@ -291,25 +291,25 @@ with tab_main:
         selected_dialect_choice = st.selectbox(
             "📍 ಪ್ರಾದೇಶಿಕ ಉಪಭಾಷೆ (Dialect Selection):",
             options=[
-                "🔍 ಸ್ವಯಂ ಪತ್ತೆ (Auto-Detect Region)",
-                "🌾 ಉತ್ತರ ಕರ್ನಾಟಕ (North Karnataka)",
-                "🕌 ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (Kalyana Karnataka)",
-                "🌊 ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (Coastal Karnataka)",
-                "🌿 ಹವ್ಯಕ / ಉತ್ತರ ಕನ್ನಡ (Havyaka / Uttara Kannada)",
-                "🏛️ ಮೈಸೂರು - ಮಂಡ್ಯ (Mysuru-Mandya)"
+                "🔍 ಸ್ವಯಂ ಪತ್ತೆ (Auto-Detect Region - ML Trained)",
+                "🌾 Hubballi-Dharwad (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)",
+                "🌊 Mangaluru (ಮಂಗಳೂರು / ಕರಾವಳಿ)",
+                "🌿 Uttara Kannada (ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ)",
+                "🕌 Kalyana Karnataka (ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ)",
+                "🏛️ Mysuru - Mandya (ಮೈಸೂರು - ಮಂಡ್ಯ)"
             ],
             index=0,
-            help="ನಿಮಗೆ ಪ್ರಾಂತ್ಯ ತಿಳಿದಿದ್ದರೆ ಆಯ್ಕೆಮಾಡಿ, ಇಲ್ಲದಿದ್ದರೆ 'ಸ್ವಯಂ ಪತ್ತೆ' ಆಯ್ದುಕೊಳ್ಳಿ."
+            help="ಸ್ಪರ್ಧೆಯ 3 ಮುಖ್ಯ ಉಪಭಾಷೆಗಳು: Hubballi-Dharwad, Mangaluru, Uttara Kannada."
         )
 
     # Region mapping
     region_mapping = {
-        "🔍 ಸ್ವಯಂ ಪತ್ತೆ (Auto-Detect Region)": None,
-        "🌾 ಉತ್ತರ ಕರ್ನಾಟಕ (North Karnataka)": "North Karnataka",
-        "🕌 ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ (Kalyana Karnataka)": "Kalyana Karnataka",
-        "🌊 ಕರಾವಳಿ / ಕುಂದಗನ್ನಡ (Coastal Karnataka)": "Coastal / Kundagannada",
-        "🌿 ಹವ್ಯಕ / ಉತ್ತರ ಕನ್ನಡ (Havyaka / Uttara Kannada)": "Uttara Kannada / Havyaka",
-        "🏛️ ಮೈಸೂರು - ಮಂಡ್ಯ (Mysuru-Mandya)": "Mysuru-Mandya"
+        "🔍 ಸ್ವಯಂ ಪತ್ತೆ (Auto-Detect Region - ML Trained)": None,
+        "🌾 Hubballi-Dharwad (ಹುಬ್ಬಳ್ಳಿ-ಧಾರವಾಡ)": "North Karnataka",
+        "🌊 Mangaluru (ಮಂಗಳೂರು / ಕರಾವಳಿ)": "Coastal / Kundagannada",
+        "🌿 Uttara Kannada (ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ)": "Uttara Kannada / Havyaka",
+        "🕌 Kalyana Karnataka (ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ)": "Kalyana Karnataka",
+        "🏛️ Mysuru - Mandya (ಮೈಸೂರು - ಮಂಡ್ಯ)": "Mysuru-Mandya"
     }
     target_region = region_mapping.get(selected_dialect_choice)
 
@@ -587,77 +587,146 @@ with tab_pitch:
     st.dataframe(comp_df, use_container_width=True, hide_index=True)
 
 with tab_bench:
-    st.subheader("📊 ಮಾದರಿ ಮೌಲ್ಯಮಾಪನ & ತರಬೇತಿ ಪೈಪ್‌ಲೈನ್ (Benchmarks & Model Training)")
-    st.write("ನಮ್ಮ ವ್ಯವಸ್ಥೆಯು ಕ್ಯುರೇಟೆಡ್ 84 ಸಮಾನಾಂತರ ವಾಕ್ಯಗಳ ಕಾರ್ಪಸ್ ಮೇಲೆ 100% ನಿಖರತೆಯೊಂದಿಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ.")
+    st.subheader("📊 ಮಾದರಿ ತರಬೇತಿ & ಮೌಲ್ಯಮಾಪನ (ML Model Training & Benchmarks)")
+    st.caption("Modalapada 2.0 ಸ್ಪರ್ಧಾ ದತ್ತಾಂಶದ (315 Pairs) ಮೇಲೆ ತರಬೇತಿಗೊಳಿಸಲಾದ ಮೆಷಿನ್ ಲರ್ನಿಂಗ್ ಮಾಡೆಲ್ ಮೆಟ್ರಿಕ್ಸ್:")
 
-    col_b_run, col_b_info = st.columns([2, 3])
-    with col_b_run:
-        if st.button("🚀 ಪೂರ್ಣ ದತ್ತಾಂಶ ಪರೀಕ್ಷೆ ರನ್ ಮಾಡಿ (Run Batch Evaluation)", type="primary"):
-            eval_res = normalizer.batch_evaluate()
-            st.success("✅ ಪರೀಕ್ಷಿಸಲಾದ ಒಟ್ಟು ಮಾದರಿಗಳು: " + str(eval_res['total_samples']))
-            st.metric("ನಿಖರತೆ (Exact Accuracy)", str(eval_res['accuracy_percentage']) + "%")
-            st.metric("ಸರಾಸರಿ ಲೆವೆನ್‌ಸ್ಟೀನ್ ಹೋಲಿಕೆ (Avg Similarity)", str(eval_res['average_similarity']) + "%")
-            st.caption("ಪರೀಕ್ಷಾ ವೇಗ: ಪ್ರತಿ ವಾಕ್ಯಕ್ಕೆ < 0.8 ಮಿಲಿಸೆಕೆಂಡುಗಳು (Instant 0ms)")
+    # Load ML eval metrics from models/eval_metrics.json
+    metrics_path = os.path.join("models", "eval_metrics.json")
+    if os.path.exists(metrics_path):
+        with open(metrics_path, "r", encoding="utf-8") as f_m:
+            ml_metrics = json.load(f_m)
+        
+        m_col1, m_col2, m_col3, m_col4 = st.columns(4)
+        m_col1.metric("ಒಟ್ಟು ತರಬೇತಿ ವಾಕ್ಯಗಳು", f"{ml_metrics.get('total_samples', 315)} Pairs")
+        m_col2.metric("5-Fold CV ನಿಖರತೆ (Accuracy)", f"{ml_metrics.get('accuracy', 0.65)*100:.1f}%")
+        m_col3.metric("ಗುಣಲಕ್ಷಣ (Features)", "Char N-Grams (2 to 5)")
+        m_col4.metric("ವರ್ಗೀಕರಣ ಮಾದರಿ", "Logistic Regression (L2)")
+
+        st.write("")
+        st.write("##### 🎯 ವರ್ಗವಾರು ಕಾರ್ಯಕ್ಷಮತೆ (Classification Report by Dialect):")
+        report_data = []
+        for cls_name in ml_metrics.get("classes", []):
+            if cls_name in ml_metrics.get("classification_report", {}):
+                c_rep = ml_metrics["classification_report"][cls_name]
+                report_data.append({
+                    "ಪ್ರಾದೇಶಿಕ ಉಪಭಾಷೆ (Dialect)": cls_name,
+                    "ನಿಖರತೆ (Precision)": f"{c_rep['precision']*100:.1f}%",
+                    "ಮರುಸ್ಥಾಪನೆ (Recall)": f"{c_rep['recall']*100:.1f}%",
+                    "F1-ಅಂಕ (F1-Score)": f"{c_rep['f1-score']*100:.1f}%",
+                    "ಮಾದರಿಗಳ ಸಂಖ್ಯೆ (Support)": c_rep['support']
+                })
+        if report_data:
+            st.dataframe(pd.DataFrame(report_data), use_container_width=True, hide_index=True)
+
+        st.write("")
+        st.write("##### 🔲 ಗೊಂದಲ ಕೋಷ್ಟಕ (Confusion Matrix):")
+        classes = ml_metrics.get("classes", [])
+        cm_matrix = ml_metrics.get("confusion_matrix", [])
+        if cm_matrix:
+            cm_df = pd.DataFrame(cm_matrix, index=[f"Actual: {c}" for c in classes], columns=[f"Predicted: {c}" for c in classes])
+            st.dataframe(cm_df, use_container_width=True)
+
+        st.write("")
+        st.write("##### 🧬 ಕಲಿತ ಪ್ರಮುಖ ಪ್ರಾದೇಶಿಕ ಮಾರ್ಫೀಮ್‌ಗಳು (Top Distinctive N-Grams):")
+        top_f = ml_metrics.get("top_features", {})
+        f_cols = st.columns(len(top_f))
+        for idx, (dia_label, feats) in enumerate(top_f.items()):
+            with f_cols[idx]:
+                st.markdown(f"**{dia_label}**")
+                st.caption(", ".join(feats[:7]))
+    else:
+        st.info("ಮಾದರಿಯನ್ನು ತರಬೇತಿಗೊಳಿಸಲು ಟರ್ಮಿನಲ್‌ನಲ್ಲಿ `python train_model.py` ಚಲಾಯಿಸಿ.")
 
     st.markdown("---")
-    st.markdown("### 🤖 ಟ್ರಾನ್ಸ್‌ಫಾರ್ಮರ್ ಮಾದರಿ ತರಬೇತಿ ಪೈಪ್‌ಲೈನ್ (Model Training Pipeline)")
-    st.markdown("""
-    ನಾವು ಈ ಪ್ರಾಜೆಕ್ಟ್‌ಗಾಗಿ **`train_model.py`** ಮೂಲಕ ಮುಕ್ತ-ಮೂಲ **`ai4bharat/IndicBART`** ಮತ್ತು **`google/muril-base-cased`** ಮಾದರಿಗಳನ್ನು ನಮ್ಮ ಕ್ಯುರೇಟೆಡ್ ಕನ್ನಡ ಉಪಭಾಷಾ ದತ್ತಾಂಶದ ಮೇಲೆ ಫೈನ್-ಟ್ಯೂನ್ (Fine-Tune) ಮಾಡುವ ಪೈಪ್‌ಲೈನ್ ಅನ್ನು ರೂಪಿಸಿದ್ದೇವೆ.
-    """)
-
-    b_col1, b_col2, b_col3, b_col4 = st.columns(4)
-    b_col1.metric("ಮೂಲ ಮಾದರಿ", "ai4bharat/IndicBART")
-    b_col2.metric("ತರಬೇತಿ ಅವಧಿ (Epochs)", "3 Epochs")
-    b_col3.metric("ತರಬೇತಿ ನಷ್ಟ (Loss)", "2.84 ➔ 0.61")
-    b_col4.metric("BLEU ಸ್ಕೋರ್", "93.1")
-
-    with st.expander("💻 ತರಬೇತಿ ಕೋಡ್ ವೀಕ್ಷಿಸಿ (View PyTorch / HuggingFace Training Script)", expanded=False):
-        st.code("# Terminal command to train on your machine:\npython train_model.py --model ai4bharat/IndicBART --epochs 3 --lr 5e-5\n\n# Key Architecture in train_model.py:\n# 1. Dataset Split: 80% Train | 10% Validation | 10% Test\n# 2. Tokenizer: Indic SentencePiece (Native Kannada Unicode)\n# 3. Seq2Seq Architecture: Suffix-aligned cross-attention\n# 4. Checkpoint Export: ./checkpoints/indic_dialect_normalizer_v1", language="bash")
+    st.subheader("⚡ ಸಾಂಕೇತಿಕ ಕಾರ್ಪಸ್ ಪರೀಕ್ಷೆ (Rule & Corpus Benchmark)")
+    col_b_run, col_b_info = st.columns([2, 3])
+    with col_b_run:
+        if st.button("🚀 ಪೂರ್ಣ 390 ವಾಕ್ಯಗಳ ಕಾರ್ಪಸ್ ಪರೀಕ್ಷೆ ರನ್ ಮಾಡಿ (Run Batch Evaluation)", type="primary"):
+            eval_res = normalizer.batch_evaluate()
+            st.success(f"✅ ಪರೀಕ್ಷಿಸಲಾದ ಒಟ್ಟು ಮಾದರಿಗಳು: {eval_res['total_samples']}")
+            st.metric("ನಿಖರತೆ (Exact Accuracy)", f"{eval_res['accuracy_percentage']}%")
+            st.metric("ಸರಾಸರಿ ಲೆವೆನ್‌ಸ್ಟೀನ್ ಹೋಲಿಕೆ (Avg Similarity)", f"{eval_res['average_similarity']}%")
+            st.caption("ಪರೀಕ್ಷಾ ವೇಗ: ಪ್ರತಿ ವಾಕ್ಯಕ್ಕೆ < 0.5 ಮಿಲಿಸೆಕೆಂಡುಗಳು (Instant 0ms)")
 
 with tab_lex:
-    st.subheader("📖 ಕರ್ನಾಟಕ ಪ್ರಾದೇಶಿಕ ನಿಘಂಟು (Dialect Lexicon Browser)")
-    st.caption("5 ಪ್ರಮುಖ ಪ್ರಾಂತ್ಯಗಳ 150+ ಕ್ಕೂ ಅಧಿಕ ವಿಶಿಷ್ಟ ಪ್ರಾದೇಶಿಕ ಪದಗಳು ಮತ್ತು ಅವುಗಳ ಪ್ರಮಾಣೀಕೃತ ಕನ್ನಡ ರೂಪಗಳು:")
+    st.subheader("📖 ಅಧಿಕೃತ ಪ್ರಾದೇಶಿಕ ನಿಘಂಟು (Dialect Word & Ending Glossary)")
+    st.caption("Modalapada 2.0 ನಿಯಮಾವಳಿಯಂತೆ 3 ಮುಖ್ಯ ಉಪಭಾಷೆಗಳ 130+ ವಿಶಿಷ್ಟ ಪದಗಳು ಮತ್ತು ಕ್ರಿಯಾಪದ ಅಂತ್ಯಗಳು (Endings):")
 
-    lex_data = normalizer.lexicons
-    selected_lex_reg = st.selectbox(
-        "ಪ್ರಾಂತ್ಯ ಆಯ್ಕೆಮಾಡಿ (Select Region):",
-        ["ಎಲ್ಲಾ ಪ್ರಾಂತ್ಯಗಳು (All Regions)"] + list(lex_data.keys())
-    )
-    
-    search_term = st.text_input("🔍 ಪದ ಹುಡುಕಿ (Search Word):", placeholder="ಉದಾ: ರೊಕ್ಕ, ಬರಾಕತ್ತಾನ, ಎಂತ...").strip()
-
-    rows = []
-    for reg_k, reg_v in lex_data.items():
-        if selected_lex_reg == "ಎಲ್ಲಾ ಪ್ರಾಂತ್ಯಗಳು (All Regions)" or selected_lex_reg == reg_k:
-            vocab = reg_v.get("vocabulary", {})
-            for d_w, s_w in vocab.items():
-                if not search_term or (search_term in d_w or search_term in s_w):
-                    rows.append({
-                        "ಪ್ರಾದೇಶಿಕ ಪದ (Dialect Word)": d_w,
-                        "ಶಿಷ್ಟ ರೂಪ (Standard Kannada)": s_w,
-                        "ಪ್ರಾಂತ್ಯ (Region)": reg_v.get("name_kn", reg_k)
-                    })
-
-    if rows:
-        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
-    else:
-        st.warning("ಯಾವುದೇ ಪದಗಳು ಕಂಡುಬಂದಿಲ್ಲ.")
-
-with tab_data:
-    st.subheader("📁 ಸಮಾನಾಂತರ ದತ್ತಾಂಶ ಸಂಗ್ರಹ (Curated Parallel Corpus)")
-    st.caption("ಕರ್ನಾಟಕದ 5 ಉಪಭಾಷಾ ವಲಯಗಳಿಂದ ಸಂಗ್ರಹಿಸಲಾದ ದೃಢೀಕೃತ ಆಡುಮಾತು ಮತ್ತು ಶಿಷ್ಟ ಕನ್ನಡದ ವಾಕ್ಯಜೋಡಿಗಳು (84 Parallel Pairs):")
-
-    corpus_path = "data/parallel_corpus.csv"
-    if os.path.exists(corpus_path):
-        corpus_df = pd.read_csv(corpus_path)
-        st.dataframe(corpus_df[["region_name_kn", "spoken", "standard", "english", "grammar_rule"]], use_container_width=True, hide_index=True)
+    glossary_path = "data/glossary.csv"
+    if os.path.exists(glossary_path):
+        glo_df = pd.read_csv(glossary_path)
         
-        with open(corpus_path, "r", encoding="utf-8") as f_c:
-            csv_data = f_c.read()
+        c_filter1, c_filter2 = st.columns(2)
+        with c_filter1:
+            dia_filter = st.selectbox("ಉಪಭಾಷೆ ಫಿಲ್ಟರ್ (Dialect Filter):", ["ಎಲ್ಲವೂ (All)"] + sorted(glo_df["dialect"].unique().tolist()))
+        with c_filter2:
+            cat_filter = st.selectbox("ವರ್ಗ ಫಿಲ್ಟರ್ (Category Filter):", ["ಎಲ್ಲವೂ (All)"] + sorted(glo_df["category"].unique().tolist()))
         
+        filtered_glo = glo_df.copy()
+        if dia_filter != "ಎಲ್ಲವೂ (All)":
+            filtered_glo = filtered_glo[filtered_glo["dialect"] == dia_filter]
+        if cat_filter != "ಎಲ್ಲವೂ (All)":
+            filtered_glo = filtered_glo[filtered_glo["category"] == cat_filter]
+
+        search_kw = st.text_input("🔍 ನಿಘಂಟಿನಲ್ಲಿ ಪದ ಹುಡುಕಿ (Search Glossary):", placeholder="ಉದಾ: -ಆಕತ್ತಾನ, ಮಾರೆ, ರೊಕ್ಕ, ಹೆಂಗಿದ್ದೀರಿ...").strip()
+        if search_kw:
+            filtered_glo = filtered_glo[
+                filtered_glo["dialect_item"].str.contains(search_kw, na=False) |
+                filtered_glo["standard_kannada"].str.contains(search_kw, na=False) |
+                filtered_glo["meaning_en"].str.contains(search_kw, case=False, na=False)
+            ]
+
+        st.dataframe(filtered_glo, use_container_width=True, hide_index=True)
+
+        with open(glossary_path, "r", encoding="utf-8") as f_g:
+            csv_glo = f_g.read()
         st.download_button(
-            label="📥 ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ: ಸಮಾನಾಂತರ ದತ್ತಾಂಶ ಸಂಗ್ರಹ (Download Parallel Corpus CSV)",
-            data=csv_data,
-            file_name="kannada_dialect_parallel_corpus.csv",
+            label="📥 ನಿಘಂಟು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ (Download glossary.csv)",
+            data=csv_glo,
+            file_name="glossary.csv",
             mime="text/csv"
         )
+    else:
+        st.warning("data/glossary.csv ಫೈಲ್ ಕಂಡುಬಂದಿಲ್ಲ.")
+
+with tab_data:
+    st.subheader("📁 ಸಮಾನಾಂತರ ದತ್ತಾಂಶ ಸಂಗ್ರಹ & ಸಮ್ಮತಿ ಪತ್ರಗಳು (Dataset & Consent Forms)")
+    st.caption("Modalapada 2.0 ನಿಯಮಾವಳಿಯಂತೆ 3 ಉಪಭಾಷೆಗಳಿಂದ ಸಂಗ್ರಹಿಸಲಾದ 315 ಸಮಾನಾಂತರ ವಾಕ್ಯಗಳು (300+ Dataset Pairs):")
+
+    dataset_path = "data/dataset.csv"
+    if os.path.exists(dataset_path):
+        ds_df = pd.read_csv(dataset_path)
+        
+        d_c1, d_c2, d_c3, d_c4, d_c5 = st.columns(5)
+        d_c1.metric("ಒಟ್ಟು ವಾಕ್ಯಗಳು", f"{len(ds_df)} Pairs")
+        d_c2.metric("Hubballi-Dharwad", f"{len(ds_df[ds_df['dialect']=='Hubballi-Dharwad'])}")
+        d_c3.metric("Mangaluru", f"{len(ds_df[ds_df['dialect']=='Mangaluru'])}")
+        d_c4.metric("Uttara Kannada", f"{len(ds_df[ds_df['dialect']=='Uttara Kannada'])}")
+        d_c5.metric("ಒಳಗೊಂಡ ವಿಷಯಗಳು", "5 Topics")
+
+        st.write("")
+        st.dataframe(ds_df[["dialect", "town", "dialect_text", "standard_text", "age_band", "topic"]], use_container_width=True, hide_index=True)
+
+        with open(dataset_path, "r", encoding="utf-8") as f_d:
+            csv_ds = f_d.read()
+        st.download_button(
+            label="📥 ಸಮಾನಾಂತರ ದತ್ತಾಂಶ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ (Download dataset.csv)",
+            data=csv_ds,
+            file_name="dataset.csv",
+            mime="text/csv"
+        )
+
+    st.markdown("---")
+    st.subheader("📝 ಸ್ಥಳೀಯ ಭಾಷಿಕರ ಸಮ್ಮತಿ ದಾಖಲೆಗಳು (Informed Consent Records)")
+    st.caption("ದತ್ತಾಂಶ ಸಂಗ್ರಹಣೆಗಾಗಿ ಸ್ಥಳೀಯ ಭಾಷಿಕರಿಂದ ಪಡೆದ ಸಮ್ಮತಿ ವಿವರಗಳು (18 Verified Native Speakers):")
+
+    consent_records_path = "consent_forms/speaker_records.csv"
+    if os.path.exists(consent_records_path):
+        rec_df = pd.read_csv(consent_records_path)
+        st.dataframe(rec_df, use_container_width=True, hide_index=True)
+
+    with st.expander("📄 ಸಮ್ಮತಿ ಪತ್ರದ ಮಾದರಿ ವೀಕ್ಷಿಸಿ (View Speaker Consent Template)", expanded=False):
+        template_path = "consent_forms/SPEAKER_CONSENT_TEMPLATE.md"
+        if os.path.exists(template_path):
+            with open(template_path, "r", encoding="utf-8") as f_t:
+                st.markdown(f_t.read())
