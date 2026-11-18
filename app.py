@@ -278,210 +278,187 @@ region_mapping = {
 }
 target_region = region_mapping.get(selected_dialect_choice)
 
-    # Side-by-Side Translation Deck
-    col_left, col_right = st.columns(2)
+# Side-by-Side Translation Deck
+col_left, col_right = st.columns(2)
 
-    with col_left:
+with col_left:
+    st.markdown("""
+    <div class="card-header-bar">
+        <span class="card-label">🗣️ ಮೂಲ ಆಡುಮಾತು (Spoken Dialect)</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+    user_input = st.text_area(
+        "ಆಡುಮಾತಿನ ವಾಕ್ಯ:",
+        value=st.session_state["input_val"],
+        height=140,
+        label_visibility="collapsed",
+        placeholder="ಯಾವುದೇ ಪ್ರಾದೇಶಿಕ ಆಡುಮಾತಿನ ವಾಕ್ಯವನ್ನು ಇಲ್ಲಿ ಟೈಪ್ ಮಾಡಿ (ಅಥವಾ ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ 'avanu bartana' ಎಂದೂ ಟೈಪ್ ಮಾಡಬಹುದು)..."
+    )
+
+    col_b1, col_b2 = st.columns([3, 1])
+    with col_b1:
+        convert_clicked = st.button("🚀 ಪರಿವರ್ತಿಸಿ (Convert)", type="primary", use_container_width=True)
+    with col_b2:
+        if st.button("🔄 ತೆರವು (Clear)", use_container_width=True):
+            st.session_state["input_val"] = ""
+            st.rerun()
+
+    st.write("")
+    with st.expander("⌨️ ಲ್ಯಾಪ್ಟಾಪ್‌ನಲ್ಲಿ ಕನ್ನಡ ಟೈಪ್ ಮಾಡುವುದು ಹೇಗೆ? (How to Type Kannada on Laptop)", expanded=False):
         st.markdown("""
-        <div class="card-header-bar">
-            <span class="card-label">🗣️ ಮೂಲ ಆಡುಮಾತು (Spoken Dialect)</span>
-        </div>
-        """, unsafe_allow_html=True)
+        **ವಿಧಾನ 1: ಇಂಗ್ಲಿಷ್ ಅಕ್ಷರಗಳಲ್ಲೇ ನೇರವಾಗಿ ಟೈಪ್ ಮಾಡಿ (Direct Kanglish)**:
+        - ನಿಮ್ಮ ಬಳಿ ಕನ್ನಡ ಕೀಬೋರ್ಡ್ ಇಲ್ಲದಿದ್ದರೂ ಪರವಾಗಿಲ್ಲ!
+        - ಮೇಲಿನ ಬಾಕ್ಸ್‌ನಲ್ಲಿ ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ `avanu bartana`, `naale hogbeku`, `baralla` ಎಂದು ಟೈಪ್ ಮಾಡಿದರೆ ಸಾಕು, ಸಿಸ್ಟಮ್ ತಾನಾಗಿಯೇ ಕನ್ನಡಕ್ಕೆ ಬದಲಾಯಿಸಿ ಪರಿವರ್ತಿಸುತ್ತದೆ.
 
-        user_input = st.text_area(
-            "ಆಡುಮಾತಿನ ವಾಕ್ಯ:",
-            value=st.session_state["input_val"],
-            height=140,
-            label_visibility="collapsed",
-            placeholder="ಯಾವುದೇ ಪ್ರಾದೇಶಿಕ ಆಡುಮಾತಿನ ವಾಕ್ಯವನ್ನು ಇಲ್ಲಿ ಟೈಪ್ ಮಾಡಿ (ಅಥವಾ ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ 'avanu bartana' ಎಂದೂ ಟೈಪ್ ಮಾಡಬಹುದು)..."
-        )
+        **ವಿಧಾನ 2: Windows ನಲ್ಲಿ ಕನ್ನಡ ಫೋನೆಟಿಕ್ ಕೀಬೋರ್ಡ್ ಆನ್ ಮಾಡಲು (ಕೇವಲ 1 ನಿಮಿಷ)**:
+        1. ನಿಮ್ಮ ಲ್ಯಾಪ್ಟಾಪ್‌ನಲ್ಲಿ **`Win + I`** ಒತ್ತಿ (Settings).
+        2. **Time & Language** $\\to$ **Language & region** ತೆರೆಯಿರಿ.
+        3. **Add a language** ಕ್ಲಿಕ್ ಮಾಡಿ $\\to$ **Kannada (ಕನ್ನಡ)** ಹುಡುಕಿ Install ಮಾಡಿ.
+        4. ಕನ್ನಡ ಪಕ್ಕದಲ್ಲಿರುವ **`...`** $\\to$ **Language options** $\\to$ **Add a keyboard** $\\to$ **Kannada Phonetic** ಆಯ್ಕೆಮಾಡಿ.
+        5. ಈಗ ಕೀಬೋರ್ಡ್‌ನಲ್ಲಿ **`Win + Space`** ಒತ್ತಿದರೆ ನೀವು ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ ಟೈಪ್ ಮಾಡುವ ಅಕ್ಷರಗಳು (`avanu` $\\to$ `ಅವನು`) ತಾನಾಗಿಯೇ ಕನ್ನಡಕ್ಕೆ ಟೈಪ್ ಆಗುತ್ತವೆ!
+        """)
 
-        col_b1, col_b2 = st.columns([3, 1])
-        with col_b1:
-            convert_clicked = st.button("🚀 ಪರಿವರ್ತಿಸಿ (Convert)", type="primary", use_container_width=True)
-        with col_b2:
-            if st.button("🔄 ತೆರವು (Clear)", use_container_width=True):
-                st.session_state["input_val"] = ""
-                st.rerun()
+with col_right:
+    # Run conversion (Uses selected exec_mode with target_region)
+    res = None
+    if user_input and user_input.strip():
+        res = normalizer.normalize(user_input.strip(), target_region=target_region, mode=exec_mode)
 
-        st.write("")
-        with st.expander("⌨️ ಲ್ಯಾಪ್ಟಾಪ್‌ನಲ್ಲಿ ಕನ್ನಡ ಟೈಪ್ ಮಾಡುವುದು ಹೇಗೆ? (How to Type Kannada on Laptop)", expanded=False):
-            st.markdown("""
-            **ವಿಧಾನ 1: ಇಂಗ್ಲಿಷ್ ಅಕ್ಷರಗಳಲ್ಲೇ ನೇರವಾಗಿ ಟೈಪ್ ಮಾಡಿ (Direct Kanglish)**:
-            - ನಿಮ್ಮ ಬಳಿ ಕನ್ನಡ ಕೀಬೋರ್ಡ್ ಇಲ್ಲದಿದ್ದರೂ ಪರವಾಗಿಲ್ಲ!
-            - ಮೇಲಿನ ಬಾಕ್ಸ್‌ನಲ್ಲಿ ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ `avanu bartana`, `naale hogbeku`, `baralla` ಎಂದು ಟೈಪ್ ಮಾಡಿದರೆ ಸಾಕು, ಸಿಸ್ಟಮ್ ತಾನಾಗಿಯೇ ಕನ್ನಡಕ್ಕೆ ಬದಲಾಯಿಸಿ ಪರಿವರ್ತಿಸುತ್ತದೆ.
-
-            **ವಿಧಾನ 2: Windows ನಲ್ಲಿ ಕನ್ನಡ ಫೋನೆಟಿಕ್ ಕೀಬೋರ್ಡ್ ಆನ್ ಮಾಡಲು (ಕೇವಲ 1 ನಿಮಿಷ)**:
-            1. ನಿಮ್ಮ ಲ್ಯಾಪ್ಟಾಪ್‌ನಲ್ಲಿ **`Win + I`** ಒತ್ತಿ (Settings).
-            2. **Time & Language** $\\to$ **Language & region** ತೆರೆಯಿರಿ.
-            3. **Add a language** ಕ್ಲಿಕ್ ಮಾಡಿ $\\to$ **Kannada (ಕನ್ನಡ)** ಹುಡುಕಿ Install ಮಾಡಿ.
-            4. ಕನ್ನಡ ಪಕ್ಕದಲ್ಲಿರುವ **`...`** $\\to$ **Language options** $\\to$ **Add a keyboard** $\\to$ **Kannada Phonetic** ಆಯ್ಕೆಮಾಡಿ.
-            5. ಈಗ ಕೀಬೋರ್ಡ್‌ನಲ್ಲಿ **`Win + Space`** ಒತ್ತಿದರೆ ನೀವು ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ ಟೈಪ್ ಮಾಡುವ ಅಕ್ಷರಗಳು (`avanu` $\\to$ `ಅವನು`) ತಾನಾಗಿಯೇ ಕನ್ನಡಕ್ಕೆ ಟೈಪ್ ಆಗುತ್ತವೆ!
-            """)
-
-    with col_right:
-        # Run conversion (Uses selected exec_mode with target_region)
-        res = None
-        if user_input and user_input.strip():
-            res = normalizer.normalize(user_input.strip(), target_region=target_region, mode=exec_mode)
-
-        # Header badge
-        badge_html = ""
-        if res and res.get("standard_text"):
-            match_type = res.get("match_type", "")
-            if "Gemini AI" in match_type:
-                badge_html = f'<span class="ai-pill">✨ Gemini AI (Neural)</span>'
-            elif target_region is None or res.get("is_auto_detected", True):
-                badge_html = f'<span class="auto-pill">📍 ಪತ್ತೆಯಾದ ಪ್ರಾಂತ್ಯ: {res.get("region_name_kn", "ಸಾಮಾನ್ಯ ಆಡುಮಾತು")}</span>'
-            else:
-                chosen_name = selected_dialect_choice.split("(")[0].strip()
-                badge_html = f'<span class="region-pill">🎯 ಪ್ರಾಂತ್ಯ: {chosen_name}</span>'
-
-        st.markdown(f"""
-        <div class="card-header-bar">
-            <span class="card-label">✍️ ಪ್ರಮಾಣ ಕನ್ನಡ (Standard Textbook Kannada)</span>
-            {badge_html}
-        </div>
-        """, unsafe_allow_html=True)
-
-        if res and res.get("standard_text"):
-            st.markdown(f"""
-            <div class="output-text-box">
-                {res["standard_text"]}
-            </div>
-            """, unsafe_allow_html=True)
-
-            # Audio Read Aloud & Copy to Clipboard
-            clean_audio_text = res["standard_text"].replace("'", "\\'").replace('"', '\\"')
-            audio_bar_html = f"""
-            <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center; font-family: sans-serif;">
-                <button onclick="playKannadaSpeech()" style="background-color: #15803D; color: white; border: none; padding: 7px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
-                    🔊 ಆಲಿಸಿ (Read Aloud)
-                </button>
-                <button onclick="copyOutputText()" id="copyBtn" style="background-color: #2563EB; color: white; border: none; padding: 7px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
-                    📋 ನಕಲಿಸಿ (Copy)
-                </button>
-                <span id="copyMsg" style="color: #16A34A; font-weight: 600; font-size: 0.85rem;"></span>
-            </div>
-            <script>
-            function copyOutputText() {{
-                var txt = '{clean_audio_text}';
-                if (navigator.clipboard) {{
-                    navigator.clipboard.writeText(txt).then(function() {{
-                        showCopied();
-                    }}).catch(function() {{
-                        execCopy(txt);
-                    }});
-                }} else {{
-                    execCopy(txt);
-                }}
-            }}
-            function execCopy(txt) {{
-                var ta = document.createElement('textarea');
-                ta.value = txt;
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                document.body.removeChild(ta);
-                showCopied();
-            }}
-            function showCopied() {{
-                document.getElementById('copyMsg').innerText = '✅ ನಕಲಿಸಲಾಗಿದೆ!';
-                setTimeout(function() {{
-                    document.getElementById('copyMsg').innerText = '';
-                }}, 2000);
-            }}
-            function playKannadaSpeech() {{
-                if ('speechSynthesis' in window) {{
-                    window.speechSynthesis.cancel();
-                    var utterance = new SpeechSynthesisUtterance('{clean_audio_text}');
-                    utterance.lang = 'kn-IN';
-                    utterance.rate = 0.9;
-                    window.speechSynthesis.speak(utterance);
-                }} else {{
-                    alert('Audio playback not supported in this browser.');
-                }}
-            }}
-            </script>
-            """
-            st.components.v1.html(audio_bar_html, height=48)
-        else:
-            st.markdown("""
-            <div class="empty-output-box">
-                ಎಡಭಾಗದಲ್ಲಿ ವಾಕ್ಯವನ್ನು ನಮೂದಿಸಿ 'ಪರಿವರ್ತಿಸಿ' ಕ್ಲಿಕ್ ಮಾಡಿ.
-            </div>
-            """, unsafe_allow_html=True)
-
-    # --- DETAILED ANALYSIS & UNIQUE FEATURES ---
+    # Header badge
+    badge_html = ""
     if res and res.get("standard_text"):
-        st.markdown("---")
+        if target_region is None or res.get("is_auto_detected", True):
+            badge_html = f'<span class="auto-pill">📍 ಪತ್ತೆಯಾದ ಪ್ರಾಂತ್ಯ: {res.get("region_name_kn", "ಸಾಮಾನ್ಯ ಆಡುಮಾತು")}</span>'
+        else:
+            chosen_name = selected_dialect_choice.split("(")[0].strip()
+            badge_html = f'<span class="region-pill">🎯 ಪ್ರಾಂತ್ಯ: {chosen_name}</span>'
 
-        # 1. Vocabulary & Grammar changes
-        info_col1, info_col2 = st.columns([3, 2])
-        with info_col1:
-            if res.get("transformations"):
-                st.write("##### 🔍 ಬದಲಾದ ಪ್ರಾದೇಶಿಕ ಪದಗಳು (Vocabulary Standardized):")
-                chips_html = ""
-                for t in res["transformations"]:
-                    chips_html += f'<span class="word-change-chip"><b>{t.get("dialect", "")}</b> ➔ <b>{t.get("standard", "")}</b></span> '
-                st.markdown(chips_html, unsafe_allow_html=True)
-            elif res.get("rules_applied"):
-                st.write("##### 📝 ಅನ್ವಯಿಸಲಾದ ವ್ಯಾಕರಣ ನಿಯಮ (Grammar Rule):")
-                rule_descs = [f"• {r.get('description', '')}" for r in res["rules_applied"][:2]]
-                st.info("\n".join(rule_descs))
+    st.markdown(f"""
+    <div class="card-header-bar">
+        <span class="card-label">✍️ ಪ್ರಮಾಣ ಕನ್ನಡ (Standard Textbook Kannada)</span>
+        {badge_html}
+    </div>
+    """, unsafe_allow_html=True)
 
-        with info_col2:
-            if res.get("english_meaning"):
-                st.write("##### 🌐 English Semantic Translation:")
-                st.write(f'*"{res["english_meaning"]}"*')
-            elif res.get("explanation"):
-                st.write("##### ℹ️ ವಿವರಣೆ (Linguistic Details):")
-                st.caption(res["explanation"])
+    if res and res.get("standard_text"):
+        st.markdown(f"""
+        <div class="output-text-box">
+            {res["standard_text"]}
+        </div>
+        """, unsafe_allow_html=True)
 
-        # 2. UNIQUE FEATURE: Cultural Etymology & Linguistic Context
-        if res.get("etymology"):
-            st.write("")
-            st.write("##### 💡 ಸಾಂಸ್ಕೃತಿಕ ಹಿನ್ನೆಲೆ & ಪದ ವ್ಯುತ್ಪತ್ತಿ (Cultural Etymology & Linguistic Origin):")
-            for et in res["etymology"]:
-                st.markdown(f"""
-                <div class="etym-card">
-                    <div class="etym-title">📖 '{et["word"]}' ➔ {et["standard"]} ({et["region"]})</div>
-                    <div class="etym-body">{et["context"]}</div>
-                </div>
-                """, unsafe_allow_html=True)
+        # Audio Read Aloud & Copy to Clipboard
+        clean_audio_text = res["standard_text"].replace("'", "\\'").replace('"', '\\"')
+        audio_bar_html = f"""
+        <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center; font-family: sans-serif;">
+            <button onclick="playKannadaSpeech()" style="background-color: #15803D; color: white; border: none; padding: 7px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+                🔊 ಆಲಿಸಿ (Read Aloud)
+            </button>
+            <button onclick="copyOutputText()" id="copyBtn" style="background-color: #2563EB; color: white; border: none; padding: 7px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 6px;">
+                📋 ನಕಲಿಸಿ (Copy)
+            </button>
+            <span id="copyMsg" style="color: #16A34A; font-weight: 600; font-size: 0.85rem;"></span>
+        </div>
+        <script>
+        function copyOutputText() {{
+            var txt = '{clean_audio_text}';
+            if (navigator.clipboard) {{
+                navigator.clipboard.writeText(txt).then(function() {{
+                    showCopied();
+                }}).catch(function() {{
+                    execCopy(txt);
+                }});
+            }} else {{
+                execCopy(txt);
+            }}
+        }}
+        function execCopy(txt) {{
+            var ta = document.createElement('textarea');
+            ta.value = txt;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showCopied();
+        }}
+        function showCopied() {{
+            document.getElementById('copyMsg').innerText = '✅ ನಕಲಿಸಲಾಗಿದೆ!';
+            setTimeout(function() {{
+                document.getElementById('copyMsg').innerText = '';
+            }}, 2000);
+        }}
+        function playKannadaSpeech() {{
+            if ('speechSynthesis' in window) {{
+                window.speechSynthesis.cancel();
+                var utterance = new SpeechSynthesisUtterance('{clean_audio_text}');
+                utterance.lang = 'kn-IN';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            }} else {{
+                alert('Audio playback not supported in this browser.');
+            }}
+        }}
+        </script>
+        """
+        st.components.v1.html(audio_bar_html, height=48)
+    else:
+        st.markdown("""
+        <div class="empty-output-box">
+            ಎಡಭಾಗದಲ್ಲಿ ವಾಕ್ಯವನ್ನು ನಮೂದಿಸಿ 'ಪರಿವರ್ತಿಸಿ' ಕ್ಲಿಕ್ ಮಾಡಿ.
+        </div>
+        """, unsafe_allow_html=True)
 
-        # 3. UNIQUE FEATURE: Regional Dialect Probability Radar / Meter
-        if res.get("dialect_distribution"):
-            st.write("")
-            with st.expander("📊 ಕರ್ನಾಟಕ ಪ್ರಾದೇಶಿಕ ಭಾಷಾ ಸಾಂದ್ರತೆ (Regional Dialect Probability Radar)", expanded=True):
-                st.caption("ಈ ವಾಕ್ಯವು ಕರ್ನಾಟಕದ ವಿವಿಧ ಪ್ರಾಂತ್ಯಗಳ ಆಡುಮಾತಿಗೆ ಎಷ್ಟು ಹತ್ತಿರವಾಗಿದೆ ಎಂಬುದರ ವಿಶ್ಲೇಷಣೆ:")
-                scores = res["dialect_distribution"]
-                cols = st.columns(len(scores))
-                region_icons = {
-                    "North Karnataka": "🌾 ಉತ್ತರ ಕರ್ನಾಟಕ",
-                    "Kalyana Karnataka": "🕌 ಕಲ್ಯಾಣ ಕರ್ನಾಟಕ",
-                    "Coastal / Kundagannada": "🌊 ಕರಾವಳಿ",
-                    "Uttara Kannada / Havyaka": "🌿 ಹವ್ಯಕ",
-                    "Mysuru-Mandya": "🏛️ ಮೈಸೂರು-ಮಂಡ್ಯ"
-                }
-                for i, (reg, sc) in enumerate(scores.items()):
-                    with cols[i]:
-                        label = region_icons.get(reg, reg)
-                        pct = int(sc * 100) if sc <= 1.0 else min(100, int(sc * 25))
-                        st.metric(label, f"{pct}%")
-                        st.progress(pct / 100.0)
+# --- CHANGED WORDS HIGHLIGHTED (Slide 4 Requirement) ---
+if res and res.get("standard_text"):
+    st.markdown("---")
 
-        # 4. UNIQUE FEATURE: All-Karnataka Cross-Dialect Generator
-        if res.get("all_dialects"):
-            st.write("")
-            with st.expander("🌐 ಅಖಿಲ ಕರ್ನಾಟಕ 5 ಪ್ರಾಂತ್ಯಗಳಲ್ಲಿ ನೋಡಿ (Cross-Dialect Multi-Region View)", expanded=True):
-                st.caption("ಇದೇ ವಾಕ್ಯವನ್ನು ಕರ್ನಾಟಕದ ವಿವಿಧ ಜಿಲ್ಲೆಗಳಲ್ಲಿ ಹೇಗೆ ಮಾತನಾಡುತ್ತಾರೆಂದು ನೋಡಿ:")
-                all_d = res["all_dialects"]
-                c_d1, c_d2 = st.columns(2)
+    info_col1, info_col2 = st.columns([3, 2])
+    with info_col1:
+        if res.get("transformations"):
+            st.write("##### 🔍 ಬದಲಾದ ಪ್ರಾದೇಶಿಕ ಪದಗಳು (Changed Words Highlighted):")
+            chips_html = ""
+            for t in res["transformations"]:
+                chips_html += f'<span class="word-change-chip"><b>{t.get("dialect", "")}</b> ➔ <b>{t.get("standard", "")}</b></span> '
+            st.markdown(chips_html, unsafe_allow_html=True)
+        elif res.get("rules_applied"):
+            st.write("##### 📝 ಅನ್ವಯಿಸಲಾದ ವ್ಯಾಕರಣ ನಿಯಮ (Grammar Rule):")
+            rule_descs = [f"• {r.get('description', '')}" for r in res["rules_applied"][:2]]
+            st.info("\n".join(rule_descs))
 
-                dialects_list = list(all_d.items())
-                with c_d1:
-                    for reg_key, d_info in dialects_list[:3]:
+    with info_col2:
+        if res.get("english_meaning"):
+            st.write("##### 🌐 English Semantic Translation:")
+            st.write(f'*"{res["english_meaning"]}"*')
+        elif res.get("explanation"):
+            st.write("##### ℹ️ ವಿವರಣೆ (Linguistic Details):")
+            st.caption(res["explanation"])
+
+    # Cultural Etymology
+    if res.get("etymology"):
+        st.write("")
+        st.write("##### 💡 ಸಾಂಸ್ಕೃತಿಕ ಹಿನ್ನೆಲೆ & ಪದ ವ್ಯುತ್ಪತ್ತಿ (Cultural Etymology & Linguistic Origin):")
+        for et in res["etymology"]:
+            st.markdown(f"""
+            <div class="etym-card">
+                <div class="etym-title">📖 '{et["word"]}' ➔ {et["standard"]} ({et["region"]})</div>
+                <div class="etym-body">{et["context"]}</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+    # Cross-Dialect Multi-Region View
+    if res.get("all_dialects"):
+        st.write("")
+        with st.expander("🌐 ಅಖಿಲ ಕರ್ನಾಟಕ 3 ಪ್ರಾಂತ್ಯಗಳಲ್ಲಿ ನೋಡಿ (Cross-Dialect View)", expanded=False):
+            st.caption("ಇದೇ ವಾಕ್ಯವನ್ನು ಇತರ ಪ್ರಾಂತ್ಯಗಳಲ್ಲಿ ಹೇಗೆ ಮಾತನಾಡುತ್ತಾರೆಂದು ನೋಡಿ:")
+            all_d = res["all_dialects"]
+            target_keys = ["North Karnataka", "Coastal / Kundagannada", "Uttara Kannada / Havyaka"]
+            c_cols = st.columns(3)
+            col_idx = 0
+            for k in target_keys:
+                if k in all_d and col_idx < 3:
+                    d_info = all_d[k]
+                    with c_cols[col_idx]:
                         st.markdown(f"""
                         <div class="dialect-card">
                             <div class="dialect-card-title">
@@ -491,16 +468,6 @@ target_region = region_mapping.get(selected_dialect_choice)
                             <div class="dialect-card-text">{d_info["text"]}</div>
                         </div>
                         """, unsafe_allow_html=True)
-                with c_d2:
-                    for reg_key, d_info in dialects_list[3:]:
-                        st.markdown(f"""
-                        <div class="dialect-card">
-                            <div class="dialect-card-title">
-                                <span>{d_info["icon"]} {d_info["name_kn"]}</span>
-                                <span class="dialect-card-tag">{d_info["accent_tag"]}</span>
-                            </div>
-                            <div class="dialect-card-text">{d_info["text"]}</div>
-                        </div>
-                        """, unsafe_allow_html=True)
+                    col_idx += 1
 
 
