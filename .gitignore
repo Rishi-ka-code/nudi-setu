@@ -38,3 +38,13 @@ wheels/
 # OS
 .DS_Store
 Thumbs.db
+
+# Virtual environments & temporary archives
+.venv/
+_pristine_backup/
+*.tar.gz
+data 2/
+data 3/
+scratch/
+original_project/
+.streamlit/credentials.toml

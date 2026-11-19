@@ -30,6 +30,33 @@ class DialectDetector:
                 self.lexicons = json.load(f)
 
         self.region_keywords = self.markers.get("region_detection_keywords", {})
+
+        # Load verified glossary markers dynamically
+        glossary_path = os.path.join(base_dir, "data", "glossary.csv")
+        reg_map = {
+            'Hubballi-Dharwad': 'North Karnataka',
+            'Mangaluru': 'Coastal / Kundagannada',
+            'Uttara Kannada': 'Uttara Kannada / Havyaka'
+        }
+        if os.path.exists(glossary_path):
+            try:
+                import csv
+                with open(glossary_path, "r", encoding="utf-8") as f:
+                    reader = csv.DictReader(f)
+                    for r in reader:
+                        d = r.get("dialect", "").strip()
+                        reg = reg_map.get(d)
+                        if not reg:
+                            continue
+                        item = r.get("dialect_item", "").strip()
+                        if not item or item.startswith("-") or item in ("ಇಲ್ಲಿ", "ಅಲ್ಲಿ", "ಎಲ್ಲಿಗೆ", "ಹೌದಾ"):
+                            continue
+                        if reg not in self.region_keywords:
+                            self.region_keywords[reg] = []
+                        if item not in self.region_keywords[reg]:
+                            self.region_keywords[reg].append(item)
+            except Exception:
+                pass
         
         # Load trained ML model if available
         self.ml_model = None
@@ -135,19 +162,50 @@ class DialectDetector:
                 "type": "Morphological Continuous Suffix (-ಲಿಕ್ಕತ್ತ-)"
             })
 
-        # North Karnataka clitic (-ಏನ್ರಿ, -ಇಲ್ರಿ, -ಐತ್ರಿ)
-        if re.search(r"([ಕ-ಹ]+)(ಏನ್ರಿ|ಿಲ್ರಿ|ೈತ್ರಿ)(?=[^\u0C80-\u0CFF]|$)", cleaned):
-            scores["North Karnataka"] = scores.get("North Karnataka", 0.0) + 2.5
+        # North Karnataka clitic and negative imperatives
+        if re.search(r"([ಕ-ಹ]+)(ಏನ್ರಿ|ಿಲ್ರಿ|ೈತ್ರಿ|ಬ್ಯಾಡ್ರಿ|ಬ್ಯಾಡ|ದ್ರಿ)(?=[^\u0C80-\u0CFF]|$)", cleaned):
+            scores["North Karnataka"] = scores.get("North Karnataka", 0.0) + 3.0
+        if re.search(r"([ಕ-ಹ]+)(್ಯಾನ|್ಯಾರ|್ಯಾವ)(?=[^\u0C80-\u0CFF]|$)", cleaned):
+            scores["North Karnataka"] = scores.get("North Karnataka", 0.0) + 3.0
 
-        # Coastal Kundagannada vocative ಮಾರೆ / verb ending -ಪೆ
+        # Coastal Kundagannada vocative, existential, verbs and continuous
         if "ಮಾರೆ" in cleaned or "ಮಾರ್ರೆ" in cleaned:
+            scores["Coastal / Kundagannada"] = scores.get("Coastal / Kundagannada", 0.0) + 4.0
+            detected_markers.append({
+                "marker": "ಮಾರೆ",
+                "region": "Coastal / Kundagannada",
+                "type": "Coastal Vocative Particle"
+            })
+        if re.search(r"(?<![\u0C80-\u0CFF])(ಉಂಡು|ಉಂಟಾ)(?=[^\u0C80-\u0CFF]|$)", cleaned):
+            scores["Coastal / Kundagannada"] = scores.get("Coastal / Kundagannada", 0.0) + 4.0
+            match = re.search(r"(?<![\u0C80-\u0CFF])(ಉಂಡು|ಉಂಟಾ)(?=[^\u0C80-\u0CFF]|$)", cleaned).group(0)
+            detected_markers.append({
+                "marker": match,
+                "region": "Coastal / Kundagannada",
+                "type": "Existential Copula"
+            })
+        if re.search(r"([ಕ-ಹ]+)(ರ್ಪೆ|ೋಪೆ|ಡ್ಪೆ|ಂಬೆ|ರ್ಪ|ೋಪ|ರ್ಪೊ|ೋಪೊ)(?=[^\u0C80-\u0CFF]|$)", cleaned):
             scores["Coastal / Kundagannada"] = scores.get("Coastal / Kundagannada", 0.0) + 3.5
-        if re.search(r"([ಕ-ಹ]+)ರ್ಪೆ(?=[^\u0C80-\u0CFF]|$)", cleaned):
+        if re.search(r"([ಕ-ಹ]+)(ಿಲ್ವಾ\?|್ಲಾ\?)(?=[^\u0C80-\u0CFF]|$)", cleaned):
             scores["Coastal / Kundagannada"] = scores.get("Coastal / Kundagannada", 0.0) + 3.0
+        if re.search(r"([ಕ-ಹ]+)(ೋದ್ವಿ|ಾಡಿದ್ವಿ|ೇಳ್ದ್ರು|ಿಂದ್ರು|ುತ್ಕೊಳಿ|ೇಳ್ದೆ|ೇಳ್ದ)(?=[^\u0C80-\u0CFF]|$)", cleaned):
+            scores["Coastal / Kundagannada"] = scores.get("Coastal / Kundagannada", 0.0) + 3.0
+        if re.search(r"್ತಾ\s+ಉಂಡು", cleaned):
+            scores["Coastal / Kundagannada"] = scores.get("Coastal / Kundagannada", 0.0) + 4.0
 
-        # Havyaka nasal pronouns (ನಾಂ, ನೀಂ, ಅವಂ)
+        # Uttara Kannada / Havyaka morphological markers
         if re.search(r"(?:^|[^\u0C80-\u0CFF])(ನಾಂ|ನೀಂ|ಅವಂ|ಅವಳ್)(?=[^\u0C80-\u0CFF]|$)", cleaned):
             scores["Uttara Kannada / Havyaka"] = scores.get("Uttara Kannada / Havyaka", 0.0) + 3.5
+        if re.search(r"[\u0C80-\u0CFF]*(ವುತ್ತೆ|ತಕ್ಕು|ತಿಂಬಲಕ್ಕು|ಬತ್ತೆ|ಕೇಳ್ತು|ಗೇದು|ಆತಾ\?)(?=[^\u0C80-\u0CFF]|$)", cleaned):
+            scores["Uttara Kannada / Havyaka"] = scores.get("Uttara Kannada / Havyaka", 0.0) + 4.0
+            match = re.search(r"[\u0C80-\u0CFF]*(ವುತ್ತೆ|ತಕ್ಕು|ತಿಂಬಲಕ್ಕು|ಬತ್ತೆ|ಕೇಳ್ತು|ಗೇದು|ಆತಾ\?)(?=[^\u0C80-\u0CFF]|$)", cleaned).group(0)
+            detected_markers.append({
+                "marker": match,
+                "region": "Uttara Kannada / Havyaka",
+                "type": "Morphological Verb/Habitual Ending"
+            })
+        if re.search(r"[\u0C80-\u0CFF]*(ುವಾ|ಿದೀನಿ)(?=[^\u0C80-\u0CFF]|$)", cleaned):
+            scores["Uttara Kannada / Havyaka"] = scores.get("Uttara Kannada / Havyaka", 0.0) + 3.0
 
         # South Karnataka discourse clitic (ಕಣಯ್ಯ, ಕಣ್ರೀ, ಕಣೋ)
         if re.search(r"(?:^|[^\u0C80-\u0CFF])(ಕಣಯ್ಯ|ಕಣ್ರೀ|ಕಣೋ|ಕಣೇ)(?=[^\u0C80-\u0CFF]|$)", cleaned):

@@ -1,0 +1,8 @@
+audio_filename,dataset_id,speaker_id,dialect,town,dialect_text,standard_text,audio_format,sample_rate_hz,channels,bit_depth,duration_sec,consent_status
+SPK001_CO_01.wav,CO_106,SPK001,Mangaluru,Mangaluru,"ಒಳಗೆ ಬರೋಡು ಮಾರೆ ನಿಕ್ಲು ಪುರಾ, ಚಾ ಕುಡ್ಕೊಂಡು ಮಾತಾಡುವ ನಾವು.","ಎಲ್ಲರೂ ಒಳಗೆ ಬನ್ನಿ ಗೆಳೆಯರೇ, ಚಹಾ ಕುಡಿದುಕೊಂಡು ನಾವು ಮಾತನಾಡೋಣ.",WAV,16000,1,16,4.67,Yes
+SPK001_CO_02.wav,CO_107,SPK001,Mangaluru,Mangaluru,ಅವ ಎಲ್ಲಿ ಹೋದ ಅಂತ ಗೊತ್ತಿಲ್ಲಿ ಮಾರೆ.,ಅವನು ಎಲ್ಲಿಗೆ ಹೋದ ಎಂದು ಗೊತ್ತಿಲ್ಲ ಗೆಳೆಯ.,WAV,16000,1,16,3.27,Yes
+SPK002_HD_01.wav,HD_106,SPK002,Hubballi-Dharwad,Hubballi,ಎಲ್ಲಿಗೆ ಹೋಗಾಕತ್ತಿ?,ಎಲ್ಲಿಗೆ ಹೋಗುತ್ತಿದ್ದೀಯಾ?,WAV,16000,1,16,2.15,Yes
+SPK002_HD_02.wav,HD_107,SPK002,Hubballi-Dharwad,Dharwad,ನಿಂಗೆ ಅರ್ಥ ಆಗಲಿಲ್ವೇನು?,ನಿನಗೆ ಅರ್ಥವಾಗಲಿಲ್ಲವೇನು?,WAV,16000,1,16,2.84,Yes
+SPK002_HD_03.wav,HD_108,SPK002,Hubballi-Dharwad,Hubballi,ಯಾಕ ಹಂಗ ಮಾಡತೀ?,ಏಕೆ ಹಾಗೆ ಮಾಡುತ್ತಿದ್ದೀಯಾ?,WAV,16000,1,16,2.24,Yes
+SPK003_UK_01.wav,UK_106,SPK003,Uttara Kannada,Sirsi,ಎಲ್ಲಿಗೆ ಹೋತಿದ್ದೆ?,ಎಲ್ಲಿಗೆ ಹೋಗುತ್ತಿದ್ದೀಯಾ?,WAV,16000,1,16,2.20,Yes
+SPK003_UK_02.wav,UK_107,SPK003,Uttara Kannada,Sirsi,ಯಾಕ್ ಹಾಂಗ್ ಮಾಡ್ತಿಯೇ?,ಏಕೆ ಹಾಗೆ ಮಾಡುತ್ತಿದ್ದೀಯಾ?,WAV,16000,1,16,2.05,Yes

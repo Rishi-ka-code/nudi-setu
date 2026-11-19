@@ -5947,5 +5947,46 @@
     "context": "festivals | Sirsi (60+)",
     "grammar_rule": "Dialect transformation for Uttara Kannada",
     "vocabulary_changes": []
+  },
+  {
+    "id": "UK_106",
+    "region_code": "UK",
+    "region_name_en": "Uttara Kannada / Havyaka (Sirsi-Karwar)",
+    "region_name_kn": "ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ (ಶಿರಸಿ-ಕಾರವಾರ)",
+    "spoken": "ಎಲ್ಲಿಗೆ ಹೋತಿದ್ದೆ?",
+    "standard": "ಎಲ್ಲಿಗೆ ಹೋಗುತ್ತಿದ್ದೀಯಾ?",
+    "english": "Where were you going? / Where are you heading?",
+    "context": "conversational | Sirsi (26-40)",
+    "grammar_rule": "Dialect transformation for Uttara Kannada",
+    "vocabulary_changes": [
+      {
+        "dialect": "ಹೋತಿದ್ದೆ",
+        "standard": "ಹೋಗುತ್ತಿದ್ದೀಯಾ",
+        "type": "Spoken verb contraction"
+      }
+    ]
+  },
+  {
+    "id": "UK_107",
+    "region_code": "UK",
+    "region_name_en": "Uttara Kannada / Havyaka (Sirsi-Karwar)",
+    "region_name_kn": "ಉತ್ತರ ಕನ್ನಡ / ಹವ್ಯಕ (ಶಿರಸಿ-ಕಾರವಾರ)",
+    "spoken": "ಯಾಕ್ ಹಾಂಗ್ ಮಾಡ್ತಿಯೇ?",
+    "standard": "ಏಕೆ ಹಾಗೆ ಮಾಡುತ್ತಿದ್ದೀಯಾ?",
+    "english": "Why are you doing like that?",
+    "context": "conversational | Sirsi (26-40)",
+    "grammar_rule": "Dialect transformation for Uttara Kannada",
+    "vocabulary_changes": [
+      {
+        "dialect": "ಹಾಂಗ್",
+        "standard": "ಹಾಗೆ",
+        "type": "Adverbial variant"
+      },
+      {
+        "dialect": "ಮಾಡ್ತಿಯೇ",
+        "standard": "ಮಾಡುತ್ತಿದ್ದೀಯಾ",
+        "type": "Verb inflection"
+      }
+    ]
   }
 ]
